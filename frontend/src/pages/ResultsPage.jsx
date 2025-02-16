@@ -19,7 +19,7 @@ const ResultsPage = () => {
 
         const fetchInsights = async () => {
             try {
-                const response = await axios.post("http://localhost:5000/analyze", { industry, query });
+                const response = await axios.post("https://your-backend-service.onrender.com/analyze", { industry, query });
                 setInsights(response.data.insights);
             } catch (err) {
                 setError("Failed to fetch insights. Please try again.");
