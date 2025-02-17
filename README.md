@@ -7,12 +7,12 @@
 
 ## 📖 Table of Contents
 - [About](#about)
-- [⚙️ Features](#features)
-- [🛠️ Tech Stack](#tech-stack)
-- [📦 Installation](#installation)
-- [🔧 Usage](#usage)
-- [📌 API Endpoints](#api-endpoints)
-- [📄 License](#license)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Installation](#installation)
+- [Usage](#usage)
+- [API Endpoints](#api-endpoints)
+- [License](#license)
 
 ---
 
@@ -21,7 +21,7 @@ The **Market Insights Platform** helps businesses analyze **public sentiment and
 
 ---
 
-## ⚙️ Features
+## Features
 ✅ Select from **4 industries** – `Travel`, `Education`, `Video Games`, `Electronics`  
 ✅ AI-powered **market insights & competitor analysis**  
 ✅ Fetches **relevant Reddit discussions** using **Reddit API**  
@@ -37,7 +37,7 @@ The **Market Insights Platform** helps businesses analyze **public sentiment and
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 ### **Frontend:**
 - ⚛️ **React.js** (Vite)
 - 🎨 **Tailwind CSS**
@@ -57,7 +57,7 @@ The **Market Insights Platform** helps businesses analyze **public sentiment and
 
 ---
 
-## 📦 Installation
+## Installation
 ### 🔹 Prerequisites
 - Install **Node.js** (`>= 16.x`)
 - Install **Python** (`>= 3.x`)
@@ -99,7 +99,7 @@ npm run dev
 ```
 ---
 
-## 🔧 Usage
+## Usage
 
 1️⃣ Open the Frontend → http://localhost:5173
 
@@ -111,14 +111,14 @@ npm run dev
 
 ---
 
-## 📌 API Endpoints
+## API Endpoints
 | **Method** | **Endpoint** | **Description** |
 |------------|-------------|----------------|
 | `POST` | `/analyze` | Fetch insights from Reddit & Gemini API |
 
 ---
 
-## 📄 License
+## License
 
 MIT License – Free to use, modify, and distribute.
 
