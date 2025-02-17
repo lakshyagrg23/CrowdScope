@@ -6,7 +6,7 @@
 ---
 
 ## 📖 Table of Contents
-- [📌 About](#about)
+- [About](#about)
 - [⚙️ Features](#features)
 - [🛠️ Tech Stack](#tech-stack)
 - [📦 Installation](#installation)
@@ -16,7 +16,7 @@
 
 ---
 
-## 📌 About
+## About
 The **Market Insights Platform** helps businesses analyze **public sentiment and trends** across different industries by extracting relevant Reddit discussions and using **AI-driven insights**.
 
 ---
