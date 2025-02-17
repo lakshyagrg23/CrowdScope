@@ -1,7 +1,7 @@
 # 🚀 CrowdScope - Gain Knowledge of Market Trends and Business Insights
 **AI-powered platform that analyzes public sentiment and market trends using public discussions and opinions on social media.**
 
-![Market Insights Platform](https://your-image-url)
+![Market Insights Platform](https://github.com/lakshyagrg23/CrowdScope/blob/daa83d4662487c97ecbd878a10ca56e724e07ca2/home.png)
 
 ---
 
