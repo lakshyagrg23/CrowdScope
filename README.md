@@ -102,13 +102,10 @@ npm run dev
 
 ## Usage
 
-1️⃣ Open the Frontend → http://localhost:5173
-
-2️⃣ Select an industry & enter a query
-
-3️⃣ Click "Get Insights"
-
-4️⃣ View structured business insights!
+- Open the Frontend → http://localhost:5173
+- Select an industry & enter a query
+- Click "Get Insights"
+- View structured business insights!
 
 
 ## License
