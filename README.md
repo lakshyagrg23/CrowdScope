@@ -1,5 +1,9 @@
-# 🚀 CrowdScope - Gain Knowledge of Market Trends and Business Insights
-**AI-powered platform that analyzes public sentiment and market trends using public discussions and opinions on social media.**
+# CrowdScope: AI-powered Market Insights Platform
+Businesses often struggle to tap into real, unfiltered customer feedback and market trends at scale. Traditional market research methods are time-consuming, expensive, and may lack the diversity of opinion needed for accurate insights.
+
+However, platforms like Reddit host millions of authentic discussions where users freely express opinions, share experiences, and highlight product pain points across every imaginable niche. Despite this, the vast, unstructured nature of Reddit data makes it difficult to extract meaningful insights manually.
+
+**CrowdScope aims to solve this by leveraging AI to analyze Reddit discussions and deliver actionable market intelligence—helping businesses make data-driven decisions, discover customer pain points, and stay ahead of trends.**
 
 ![Market Insights Platform](https://github.com/lakshyagrg23/CrowdScope/blob/daa83d4662487c97ecbd878a10ca56e724e07ca2/home.png)
 
@@ -11,26 +15,25 @@
 - [Tech Stack](#tech-stack)
 - [Installation](#installation)
 - [Usage](#usage)
-- [API Endpoints](#api-endpoints)
 - [License](#license)
 
 ---
 
 ## About
-The **Market Insights Platform** helps businesses analyze **public sentiment and trends** across different industries by extracting relevant Reddit discussions and using **AI-driven insights**.
+CrowdScope is an AI-powered platform that unlocks actionable market intelligence from Reddit—the internet’s largest pool of public opinion. By analyzing real conversations across thousands of communities, it helps businesses discover what their customers truly care about, identify emerging trends, and stay ahead of the competition.
 
 ---
 
 ## Features
-✅ Select from **4 industries** – `Travel`, `Education`, `Video Games`, `Electronics`  
+✅ Provides insights **focussed** on the specified industry  
 ✅ AI-powered **market insights & competitor analysis**  
 ✅ Fetches **relevant Reddit discussions** using **Reddit API**  
 ✅ Analyzes **public sentiment** using **Google Gemini AI API**  
 ✅ Displays structured **business insights**:
-   - 🔹 **Overview of Public Sentiments**
-   - 🔹 **Positives**
-   - 🔹 **Shortcomings**
-   - 🔹 **Suggestions Regarding Optimal Business Strategy**
+   - **Overview of Public Sentiments**
+   - **Positives**
+   - **Shortcomings**
+   - **Suggestions Regarding Optimal Business Strategy**
 
 ✅ **Modern UI** built with **React.js + Tailwind CSS**  
 ✅ **Fast & scalable** with **Vercel + Render deployment**
@@ -39,17 +42,15 @@ The **Market Insights Platform** helps businesses analyze **public sentiment and
 
 ## Tech Stack
 ### **Frontend:**
-- ⚛️ **React.js** (Vite)
-- 🎨 **Tailwind CSS**
-- 🔗 **Axios** (for API calls)
-- 🌐 **React Router**
+- **React.js**
+- **Tailwind CSS**
 
 ### **Backend:**
-- 🟢 **Node.js** (Express.js)
-- 🔗 **Axios** (API requests)
-- 🐍 **Python** (Reddit data fetching)
-- 🔧 **Google Gemini API** (AI processing)
-- 🔥 **Reddit API (PRAW)** (Fetching posts/comments)
+- **Node.js** (Express.js)
+- **Axios** (API requests)
+- **Python** (Reddit data fetching)
+- **Google Gemini API** (AI processing)
+- **Reddit API (PRAW)** (Fetching posts/comments)
 
 ### **Deployment:**
 - 🌍 **Frontend → Vercel**
@@ -109,14 +110,6 @@ npm run dev
 
 4️⃣ View structured business insights!
 
----
-
-## API Endpoints
-| **Method** | **Endpoint** | **Description** |
-|------------|-------------|----------------|
-| `POST` | `/analyze` | Fetch insights from Reddit & Gemini API |
-
----
 
 ## License
 
