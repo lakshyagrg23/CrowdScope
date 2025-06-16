@@ -5,7 +5,7 @@ However, platforms like Reddit host millions of authentic discussions where user
 
 **CrowdScope aims to solve this by leveraging AI to analyze Reddit discussions and deliver actionable market intelligence—helping businesses make data-driven decisions, discover customer pain points, and stay ahead of trends.**
 
-![Market Insights Platform](https://github.com/lakshyagrg23/CrowdScope/blob/daa83d4662487c97ecbd878a10ca56e724e07ca2/home.png)
+![Screenshot 2025-06-06 011207](https://github.com/user-attachments/assets/391fa8e6-8047-4c7c-b3d5-e2c6b8e6292e)
 
 ---
 
