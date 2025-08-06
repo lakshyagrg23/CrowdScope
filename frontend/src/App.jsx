@@ -1,16 +1,29 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
+import LoginPage from "./pages/LoginPage";
 import QueryPage from "./pages/QueryPage";
 import ResultsPage from "./pages/ResultsPage";
+import SelectCompetitorPage from "./pages/SelectCompetitorPage";
+import CompetitorAnalysisPage from "./pages/CompetitorAnalysisPage";
+import ConsumerPage from "./pages/ConsumerPage";
+import ConsumerResultsPage from "./pages/ConsumerResultsPage";
+import ProductRecommendationPage from "./pages/ProductRecommendationPage";
 
 function App() {
     return (
         <Router>
             <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/login" element={<LoginPage />} />
                 <Route path="/query" element={<QueryPage />} />
+                <Route path="/query-consumer" element={<ConsumerPage />} />
                 <Route path="/results" element={<ResultsPage />} />
+                <Route path="/select-competitor" element={<SelectCompetitorPage />} />
+                <Route path="/competitor-analysis" element={<CompetitorAnalysisPage />} />
+                <Route path="/consumer-results" element={<ConsumerResultsPage />} />
+                <Route path="/product-recommendation" element={<ProductRecommendationPage />} />
+
             </Routes>
         </Router>
     );
