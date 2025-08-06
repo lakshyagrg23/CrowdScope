@@ -1,8 +1,114 @@
-# React + Vite
+# CrowdScope: AI-powered Market Insights Platform
+Businesses often struggle to tap into real, unfiltered customer feedback and market trends at scale. Traditional market research methods are time-consuming, expensive, and may lack the diversity of opinion needed for accurate insights.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+However, platforms like Reddit host millions of authentic discussions where users freely express opinions, share experiences, and highlight product pain points across every imaginable niche. Despite this, the vast, unstructured nature of Reddit data makes it difficult to extract meaningful insights manually.
 
-Currently, two official plugins are available:
+**CrowdScope aims to solve this by leveraging AI to analyze Reddit discussions and deliver actionable market intelligence—helping businesses make data-driven decisions, discover customer pain points, and stay ahead of trends.**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+![Screenshot 2025-06-06 011207](https://github.com/user-attachments/assets/391fa8e6-8047-4c7c-b3d5-e2c6b8e6292e)
+
+---
+
+## 📖 Table of Contents
+- [About](#about)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Installation](#installation)
+- [Usage](#usage)
+- [License](#license)
+
+---
+
+## About
+CrowdScope is an AI-powered platform that unlocks actionable market intelligence from Reddit—the internet’s largest pool of public opinion. By analyzing real conversations across thousands of communities, it helps businesses discover what their customers truly care about, identify emerging trends, and stay ahead of the competition.
+
+---
+
+## Features
+✅ Provides insights **focussed** on the specified industry  
+✅ AI-powered **market insights & competitor analysis**  
+✅ Fetches **relevant Reddit discussions** using **Reddit API**  
+✅ Analyzes **public sentiment** using **Google Gemini AI API**  
+✅ Displays structured **business insights**:
+   - **Overview of Public Sentiments**
+   - **Positives**
+   - **Shortcomings**
+   - **Suggestions Regarding Optimal Business Strategy**
+
+✅ **Modern UI** built with **React.js + Tailwind CSS**  
+✅ **Fast & scalable** with **Vercel + Render deployment**
+
+---
+
+## Tech Stack
+### **Frontend:**
+- **React.js**
+- **Tailwind CSS**
+
+### **Backend:**
+- **Node.js** (Express.js)
+- **Axios** (API requests)
+- **Python** (Reddit data fetching)
+- **Google Gemini API** (AI processing)
+- **Reddit API (PRAW)** (Fetching posts/comments)
+
+### **Deployment:**
+- 🌍 **Frontend → Vercel**
+- 🔄 **Backend → Render**
+
+---
+
+## Installation
+### 🔹 Prerequisites
+- Install **Node.js** (`>= 16.x`)
+- Install **Python** (`>= 3.x`)
+- **Reddit API Credentials**:
+  - Create a **Reddit App** at [Reddit API](https://www.reddit.com/prefs/apps)
+  - Get `Client ID`, `Client Secret`, and `User Agent`
+- **Google Gemini API Key**:
+  - Get it from [Google AI Studio](https://aistudio.google.com/)
+
+### 🔹 Clone the Repository
+```sh
+git clone https://github.com/yourusername/Market-Insights-Platform.git
+cd Market-Insights-Platform
+```
+
+### 🔹 Clone the Repository
+```sh
+cd backend
+npm install
+```
+Create a .env file in the backend/ folder and add:
+```sh
+PORT=5000
+GEMINI_API_KEY=your_google_gemini_api_key
+REDDIT_CLIENT_ID=your_reddit_client_id
+REDDIT_CLIENT_SECRET=your_reddit_client_secret
+REDDIT_USER_AGENT=your_reddit_user_agent
+```
+Run the backend:
+```sh
+node server.js
+```
+
+### 🔹 Setup Frontend
+```sh
+cd frontend
+npm install
+npm run dev
+```
+---
+
+## Usage
+
+- Open the Frontend → http://localhost:5173
+- Select an industry & enter a query
+- Click "Get Insights"
+- View structured business insights!
+
+
+## License
+
+MIT License – Free to use, modify, and distribute.
+
