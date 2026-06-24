@@ -32,7 +32,7 @@ def sanitize_subreddit_name(name):
     return name
 
 
-def fetch_reddit_posts(subreddits, query):
+def fetch_reddit_posts(subreddits, query, post_limit=8, comment_limit=5):
     posts_data = []
     
     try:
@@ -42,7 +42,7 @@ def fetch_reddit_posts(subreddits, query):
             return []
 
         # Print info for debugging
-        print(f"Debug: Using subreddits {subreddits} with query '{query}'", file=sys.stderr)
+        print(f"Debug: Using subreddits {subreddits} with query '{query}', post_limit={post_limit}, comment_limit={comment_limit}", file=sys.stderr)
         
         # Initialize Reddit API with error handling
         try:
@@ -67,7 +67,7 @@ def fetch_reddit_posts(subreddits, query):
                 
                 # Use a try-except block for the search
                 try:
-                    posts = subreddit.search(query, limit=5, sort='relevance')
+                    posts = subreddit.search(query, limit=post_limit, sort='relevance')
                     
                     post_count = 0
                     for post in posts:
@@ -82,7 +82,7 @@ def fetch_reddit_posts(subreddits, query):
                         # Handle comments safely
                         try:
                             post.comments.replace_more(limit=0)
-                            for comment in post.comments.list()[:5]:
+                            for comment in post.comments.list()[:comment_limit]:
                                 post_data["comments"].append(comment.body)
                         except Exception as e:
                             print(f"Debug: Error fetching comments for post: {str(e)}", file=sys.stderr)
@@ -103,7 +103,7 @@ def fetch_reddit_posts(subreddits, query):
             print(f"Debug: No posts found in specified subreddits, trying r/all", file=sys.stderr)
             try:
                 all_subreddit = reddit.subreddit("all")
-                posts = all_subreddit.search(query, limit=10, sort='relevance')
+                posts = all_subreddit.search(query, limit=post_limit * 2, sort='relevance')
                 
                 for post in posts:
                     post_data = {
@@ -116,7 +116,7 @@ def fetch_reddit_posts(subreddits, query):
                     
                     try:
                         post.comments.replace_more(limit=0)
-                        for comment in post.comments.list()[:5]:
+                        for comment in post.comments.list()[:comment_limit]:
                             post_data["comments"].append(comment.body)
                     except Exception as e:
                         pass
@@ -129,6 +129,48 @@ def fetch_reddit_posts(subreddits, query):
         print(f"Debug: Unexpected error in fetch_reddit_posts: {str(e)}", file=sys.stderr)
     
     return posts_data
+
+
+if __name__ == "__main__":
+    try:
+        if len(sys.argv) < 3:
+            print(json.dumps({"error": "Missing required arguments"}))
+            sys.exit(1)
+            
+        subreddits = json.loads(sys.argv[1])  # Read subreddits list from command-line args
+        query = sys.argv[2]
+        
+        post_limit = 8
+        comment_limit = 5
+        
+        if len(sys.argv) > 3:
+            try:
+                post_limit = int(sys.argv[3])
+            except ValueError:
+                pass
+        if len(sys.argv) > 4:
+            try:
+                comment_limit = int(sys.argv[4])
+            except ValueError:
+                pass
+        
+        # Handle empty or invalid inputs
+        if not subreddits or not isinstance(subreddits, list):
+            subreddits = ["all"]
+        if not query or not isinstance(query, str):
+            print(json.dumps({"error": "Invalid query parameter"}))
+            sys.exit(1)
+            
+        result = fetch_reddit_posts(subreddits, query, post_limit, comment_limit)
+        
+        # Always return a valid JSON array, even if empty
+        print(json.dumps(result))
+        
+    except Exception as e:
+        print(json.dumps({"error": f"Script execution error: {str(e)}"}))
+        sys.exit(1)
+
+
 
 # def fetch_reddit_posts(subreddits, query):
 #     posts_data = []
@@ -152,28 +194,3 @@ def fetch_reddit_posts(subreddits, query):
 #             posts_data.append(post_data)
     
 #     return posts_data
-
-if __name__ == "__main__":
-    try:
-        if len(sys.argv) < 3:
-            print(json.dumps({"error": "Missing required arguments"}))
-            sys.exit(1)
-            
-        subreddits = json.loads(sys.argv[1])  # Read subreddits list from command-line args
-        query = sys.argv[2]
-        
-        # Handle empty or invalid inputs
-        if not subreddits or not isinstance(subreddits, list):
-            subreddits = ["all"]
-        if not query or not isinstance(query, str):
-            print(json.dumps({"error": "Invalid query parameter"}))
-            sys.exit(1)
-            
-        result = fetch_reddit_posts(subreddits, query)
-        
-        # Always return a valid JSON array, even if empty
-        print(json.dumps(result))
-        
-    except Exception as e:
-        print(json.dumps({"error": f"Script execution error: {str(e)}"}))
-        sys.exit(1)
