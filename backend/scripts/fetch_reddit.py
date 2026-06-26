@@ -3,6 +3,8 @@ import json
 import sys
 import os
 import re
+import time
+from concurrent.futures import ThreadPoolExecutor
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -14,122 +16,168 @@ REDDIT_CLIENT_SECRET = os.getenv("REDDIT_CLIENT_SECRET")
 REDDIT_USER_AGENT = os.getenv("REDDIT_USER_AGENT")
 
 # Initialize Reddit API
-reddit = praw.Reddit(
-    client_id=REDDIT_CLIENT_ID,
-    client_secret=REDDIT_CLIENT_SECRET,
-    user_agent=REDDIT_USER_AGENT
-)
+reddit = None
+if REDDIT_CLIENT_ID and REDDIT_CLIENT_SECRET:
+    try:
+        reddit = praw.Reddit(
+            client_id=REDDIT_CLIENT_ID,
+            client_secret=REDDIT_CLIENT_SECRET,
+            user_agent=REDDIT_USER_AGENT or "CrowdScope Scraper"
+        )
+    except Exception as e:
+        print(f"Debug: Reddit API initialization error: {str(e)}", file=sys.stderr)
 
 def sanitize_subreddit_name(name):
     """Sanitize subreddit name to ensure it's valid format."""
-    # Remove 'r/' prefix if present
     if name.startswith('r/'):
         name = name[2:]
-    
-    # Remove any non-alphanumeric characters except underscores and dashes
     name = re.sub(r'[^\w\-]', '', name)
-    
     return name
 
-
-def fetch_reddit_posts(subreddits, query, post_limit=8, comment_limit=5):
-    posts_data = []
-    
-    try:
-        # Validate credentials
-        if not REDDIT_CLIENT_ID or not REDDIT_CLIENT_SECRET:
-            print(json.dumps({"error": "Reddit API credentials missing in .env file"}))
-            return []
-
-        # Print info for debugging
-        print(f"Debug: Using subreddits {subreddits} with query '{query}', post_limit={post_limit}, comment_limit={comment_limit}", file=sys.stderr)
+def fetch_single_subreddit(subreddit_name, query, post_limit, comment_limit):
+    if not reddit:
+        return []
         
-        # Initialize Reddit API with error handling
+    posts_data = []
+    clean_name = sanitize_subreddit_name(subreddit_name)
+    if not clean_name:
+        return []
+        
+    start_time = time.time()
+    try:
+        subreddit = reddit.subreddit(clean_name)
+        
+        # Validate subreddit exists and is public/accessible
         try:
-            reddit = praw.Reddit(
-                client_id=REDDIT_CLIENT_ID,
-                client_secret=REDDIT_CLIENT_SECRET,
-                user_agent=REDDIT_USER_AGENT
-            )
+            _ = subreddit.id
         except Exception as e:
-            print(f"Debug: Reddit API initialization error: {str(e)}", file=sys.stderr)
+            print(f"Debug: Subreddit r/{clean_name} does not exist or is inaccessible: {str(e)}", file=sys.stderr)
             return []
             
-        for subreddit_name in subreddits:
-            # Clean up subreddit name
-            clean_name = sanitize_subreddit_name(subreddit_name)
-            if not clean_name:
-                print(f"Debug: Skipping invalid subreddit name: {subreddit_name}", file=sys.stderr)
-                continue
+        search_start = time.time()
+        posts = list(subreddit.search(query, limit=post_limit, sort='relevance'))
+        search_duration = time.time() - search_start
+        print(f"Debug: [r/{clean_name}] Search for '{query}' returned {len(posts)} posts in {search_duration:.3f}s", file=sys.stderr)
+        
+        for post in posts:
+            post_data = {
+                "title": post.title,
+                "score": post.score,
+                "url": f"https://www.reddit.com{post.permalink}",
+                "subreddit": clean_name,
+                "body": post.selftext[:1500] if post.selftext else "",
+                "comments": []
+            }
+            
+            # Zero-network comment iteration (direct list slicing)
+            comment_count = 0
+            bot_phrases = ["welcome to r/", "please read the rules", "moderator of this subreddit", "action was performed automatically"]
+            
+            for comment in post.comments:
+                if comment_count >= comment_limit:
+                    break
                 
-            try:
-                subreddit = reddit.subreddit(clean_name)
+                if not isinstance(comment, praw.models.Comment):
+                    continue
                 
-                # Use a try-except block for the search
-                try:
-                    posts = subreddit.search(query, limit=post_limit, sort='relevance')
+                # 1. Author Filter
+                if comment.author:
+                    author_name = comment.author.name.lower()
+                    if author_name == 'automoderator' or author_name.endswith('bot'):
+                        continue
+                
+                # 2. Length Filter
+                comment_body = comment.body or ""
+                if len(comment_body.split()) < 5:
+                    continue
                     
-                    post_count = 0
-                    for post in posts:
-                        post_data = {
-                            "title": post.title,
-                            "score": post.score,
-                            "url": f"https://www.reddit.com{post.permalink}",
-                            "subreddit": clean_name,
-                            "comments": []
-                        }
-                        
-                        # Handle comments safely
-                        try:
-                            post.comments.replace_more(limit=0)
-                            for comment in post.comments.list()[:comment_limit]:
-                                post_data["comments"].append(comment.body)
-                        except Exception as e:
-                            print(f"Debug: Error fetching comments for post: {str(e)}", file=sys.stderr)
-                        
-                        posts_data.append(post_data)
-                        post_count += 1
-                        
-                    print(f"Debug: Found {post_count} posts in r/{clean_name}", file=sys.stderr)
+                # 3. Text/Phrase Substring Filter
+                if any(phrase in comment_body.lower() for phrase in bot_phrases):
+                    continue
                     
-                except Exception as e:
-                    print(f"Debug: Error searching subreddit r/{clean_name}: {str(e)}", file=sys.stderr)
-                    
-            except Exception as e:
-                print(f"Debug: Error accessing subreddit r/{clean_name}: {str(e)}", file=sys.stderr)
+                post_data["comments"].append(comment_body)
+                comment_count += 1
+                
+            posts_data.append(post_data)
+            
+    except Exception as e:
+        print(f"Debug: Error processing subreddit r/{clean_name}: {str(e)}", file=sys.stderr)
+        
+    duration = time.time() - start_time
+    print(f"Debug: Finished r/{clean_name} in {duration:.3f}s", file=sys.stderr)
+    return posts_data
+
+def fetch_fallback_all(query, post_limit, comment_limit):
+    if not reddit:
+        return []
+        
+    print(f"Debug: No posts found in specified subreddits, trying r/all", file=sys.stderr)
+    posts_data = []
+    try:
+        all_subreddit = reddit.subreddit("all")
+        posts = list(all_subreddit.search(query, limit=post_limit * 2, sort='relevance'))
+        
+        for post in posts:
+            post_data = {
+                "title": post.title,
+                "score": post.score,
+                "url": f"https://www.reddit.com{post.permalink}",
+                "subreddit": "all",
+                "body": post.selftext[:1500] if post.selftext else "",
+                "comments": []
+            }
+            
+            comment_count = 0
+            bot_phrases = ["welcome to r/", "please read the rules", "moderator of this subreddit", "action was performed automatically"]
+            
+            for comment in post.comments:
+                if comment_count >= comment_limit:
+                    break
+                if not isinstance(comment, praw.models.Comment):
+                    continue
+                if comment.author:
+                    author_name = comment.author.name.lower()
+                    if author_name == 'automoderator' or author_name.endswith('bot'):
+                        continue
+                comment_body = comment.body or ""
+                if len(comment_body.split()) < 5:
+                    continue
+                if any(phrase in comment_body.lower() for phrase in bot_phrases):
+                    continue
+                post_data["comments"].append(comment_body)
+                comment_count += 1
+                
+            posts_data.append(post_data)
+    except Exception as e:
+        print(f"Debug: Error with fallback to r/all: {str(e)}", file=sys.stderr)
+    return posts_data
+
+def fetch_reddit_posts(subreddits, query, post_limit=8, comment_limit=5):
+    if not reddit:
+        print(json.dumps({"error": "Reddit API credentials missing in .env file"}))
+        return []
+        
+    posts_data = []
+    try:
+        print(f"Debug: Using subreddits {subreddits} with query '{query}', post_limit={post_limit}, comment_limit={comment_limit}", file=sys.stderr)
+        
+        max_workers = len(subreddits) if subreddits else 1
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            futures = [
+                executor.submit(fetch_single_subreddit, sub_name, query, post_limit, comment_limit)
+                for sub_name in subreddits
+            ]
+            for future in futures:
+                posts_data.extend(future.result())
                 
         # If no posts were found in any subreddit, try with r/all as fallback
         if not posts_data and "all" not in [s.lower() for s in subreddits]:
-            print(f"Debug: No posts found in specified subreddits, trying r/all", file=sys.stderr)
-            try:
-                all_subreddit = reddit.subreddit("all")
-                posts = all_subreddit.search(query, limit=post_limit * 2, sort='relevance')
-                
-                for post in posts:
-                    post_data = {
-                        "title": post.title,
-                        "score": post.score,
-                        "url": f"https://www.reddit.com{post.permalink}",
-                        "subreddit": "all",
-                        "comments": []
-                    }
-                    
-                    try:
-                        post.comments.replace_more(limit=0)
-                        for comment in post.comments.list()[:comment_limit]:
-                            post_data["comments"].append(comment.body)
-                    except Exception as e:
-                        pass
-                    
-                    posts_data.append(post_data)
-            except Exception as e:
-                print(f"Debug: Error with fallback to r/all: {str(e)}", file=sys.stderr)
-    
+            posts_data = fetch_fallback_all(query, post_limit, comment_limit)
+            
     except Exception as e:
         print(f"Debug: Unexpected error in fetch_reddit_posts: {str(e)}", file=sys.stderr)
-    
+        
     return posts_data
-
 
 if __name__ == "__main__":
     try:
@@ -169,28 +217,3 @@ if __name__ == "__main__":
     except Exception as e:
         print(json.dumps({"error": f"Script execution error: {str(e)}"}))
         sys.exit(1)
-
-
-
-# def fetch_reddit_posts(subreddits, query):
-#     posts_data = []
-    
-#     for subreddit_name in subreddits:
-#         subreddit = reddit.subreddit(subreddit_name)
-#         posts = subreddit.search(query, limit=5)
-        
-#         for post in posts:
-#             post_data = {
-#                 "title": post.title,
-#                 "score": post.score,
-#                 "url": post.url,
-#                 "comments": []
-#             }
-            
-#             post.comments.replace_more(limit=0)
-#             for comment in post.comments.list()[:5]:
-#                 post_data["comments"].append(comment.body)
-            
-#             posts_data.append(post_data)
-    
-#     return posts_data
