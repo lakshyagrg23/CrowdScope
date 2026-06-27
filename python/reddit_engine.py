@@ -112,16 +112,54 @@ def fetch_single_subreddit(subreddit_name, query, post_limit, comment_limit):
             return []
             
         search_start = time.time()
-        posts = list(subreddit.search(query, limit=post_limit, sort='relevance'))
-        search_duration = time.time() - search_start
-        logging.info(f"[r/{clean_name}] Search for '{query}' returned {len(posts)} posts in {search_duration:.3f}s")
         
-        if posts:
+        # Concurrent fetching of different sorts
+        raw_posts = []
+        with ThreadPoolExecutor(max_workers=3) as executor:
+            future_rel = executor.submit(lambda: list(subreddit.search(query, limit=post_limit, sort='relevance')))
+            future_top = executor.submit(lambda: list(subreddit.search(query, limit=post_limit, sort='top', time_filter='year')))
+            future_new = executor.submit(lambda: list(subreddit.search(query, limit=post_limit, sort='new')))
+            
+            for future in [future_rel, future_top, future_new]:
+                try:
+                    raw_posts.extend(future.result())
+                except Exception as e:
+                    logging.warning(f"Error fetching a sort variant in r/{clean_name}: {e}")
+
+        # Deduplicate
+        unique_posts = {}
+        for post in raw_posts:
+            if post.id not in unique_posts:
+                unique_posts[post.id] = post
+                
+        dedup_posts = list(unique_posts.values())
+        
+        # Heuristic filtering and scoring
+        scored_posts = []
+        for post in dedup_posts:
+            text_len = len(post.selftext) if post.selftext else 0
+            if text_len < 50 and post.num_comments < 2:
+                # low effort, throw away
+                continue
+                
+            importance_score = post.score + (post.num_comments * 5)
+            scored_posts.append((importance_score, post))
+            
+        # Sort by importance
+        scored_posts.sort(key=lambda x: x[0], reverse=True)
+        
+        # Take the top `post_limit`
+        top_posts = [p[1] for p in scored_posts[:post_limit]]
+        
+        search_duration = time.time() - search_start
+        logging.info(f"[r/{clean_name}] Diversified search returned {len(dedup_posts)} unique valid posts, selected top {len(top_posts)} in {search_duration:.3f}s")
+        
+        if top_posts:
             # Concurrently fetch all posts within the subreddit (O(1) latency instead of O(posts))
-            with ThreadPoolExecutor(max_workers=len(posts)) as executor:
+            with ThreadPoolExecutor(max_workers=len(top_posts)) as executor:
                 futures = [
                     executor.submit(process_single_post, post, comment_limit, clean_name)
-                    for post in posts
+                    for post in top_posts
                 ]
                 for future in futures:
                     posts_data.append(future.result())
@@ -143,14 +181,44 @@ def fetch_fallback_all(query, post_limit, comment_limit):
     try:
         all_subreddit = reddit.subreddit("all")
         search_start = time.time()
-        posts = list(all_subreddit.search(query, limit=post_limit * 2, sort='relevance'))
-        logging.info(f"[r/all] Search returned {len(posts)} posts in {time.time() - search_start:.3f}s")
         
-        if posts:
-            with ThreadPoolExecutor(max_workers=min(len(posts), 20)) as executor:
+        raw_posts = []
+        with ThreadPoolExecutor(max_workers=3) as executor:
+            future_rel = executor.submit(lambda: list(all_subreddit.search(query, limit=post_limit * 2, sort='relevance')))
+            future_top = executor.submit(lambda: list(all_subreddit.search(query, limit=post_limit * 2, sort='top', time_filter='year')))
+            future_new = executor.submit(lambda: list(all_subreddit.search(query, limit=post_limit * 2, sort='new')))
+            
+            for future in [future_rel, future_top, future_new]:
+                try:
+                    raw_posts.extend(future.result())
+                except Exception as e:
+                    pass
+
+        unique_posts = {}
+        for post in raw_posts:
+            if post.id not in unique_posts:
+                unique_posts[post.id] = post
+                
+        dedup_posts = list(unique_posts.values())
+        
+        scored_posts = []
+        for post in dedup_posts:
+            text_len = len(post.selftext) if post.selftext else 0
+            if text_len < 50 and post.num_comments < 2:
+                continue
+            importance_score = post.score + (post.num_comments * 5)
+            scored_posts.append((importance_score, post))
+            
+        scored_posts.sort(key=lambda x: x[0], reverse=True)
+        top_posts = [p[1] for p in scored_posts[:post_limit * 2]]
+        
+        logging.info(f"[r/all] Search returned {len(top_posts)} highly important posts in {time.time() - search_start:.3f}s")
+        
+        if top_posts:
+            with ThreadPoolExecutor(max_workers=min(len(top_posts), 20)) as executor:
                 futures = [
                     executor.submit(process_single_post, post, comment_limit, "all")
-                    for post in posts
+                    for post in top_posts
                 ]
                 for future in futures:
                     posts_data.append(future.result())

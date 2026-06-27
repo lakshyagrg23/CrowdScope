@@ -19,6 +19,8 @@ export const createResearchController = async (req, res) => {
       });
     }
 
+    const deviceId = req.headers['x-device-id'];
+
     // Create the persistent workspace record
     const research = await prisma.research.create({
       data: {
@@ -27,7 +29,8 @@ export const createResearchController = async (req, res) => {
         entity: "Pending",
         industry: "Pending",
         depth: depth,
-        status: "PROCESSING"
+        status: "PROCESSING",
+        deviceId: deviceId || null
       }
     });
 
@@ -53,19 +56,21 @@ export const createResearchController = async (req, res) => {
 export const getResearchController = async (req, res) => {
   try {
     const { id } = req.params;
+    const deviceId = req.headers['x-device-id'];
     
     const research = await prisma.research.findUnique({
       where: { id },
       include: {
         report: true,
-        // Optional: Include clusters if needed by the frontend, but report might be enough
-        // clusters: true,
-        // discussions: true
       }
     });
     
     if (!research) {
       return res.status(404).json({ error: 'Not Found', message: 'Research not found' });
+    }
+    
+    if (research.deviceId && research.deviceId !== deviceId) {
+      return res.status(403).json({ error: 'Forbidden', message: 'You do not have access to this workspace' });
     }
     
     return res.status(200).json(research);
@@ -84,9 +89,15 @@ export const getAllResearchController = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || 20;
     const skip = (page - 1) * pageSize;
+    const deviceId = req.headers['x-device-id'];
+    
+    if (!deviceId) {
+      return res.status(200).json({ data: [], meta: { page, pageSize, totalCount: 0, totalPages: 0 } });
+    }
 
     const [workspaces, totalCount] = await Promise.all([
       prisma.research.findMany({
+        where: { deviceId },
         skip,
         take: pageSize,
         orderBy: { createdAt: 'desc' },
@@ -104,7 +115,7 @@ export const getAllResearchController = async (req, res) => {
           discussionCount: true,
         }
       }),
-      prisma.research.count()
+      prisma.research.count({ where: { deviceId } })
     ]);
 
     return res.status(200).json({
@@ -128,6 +139,20 @@ export const getAllResearchController = async (req, res) => {
 export const deleteResearchController = async (req, res) => {
   try {
     const { id } = req.params;
+    const deviceId = req.headers['x-device-id'];
+    
+    const research = await prisma.research.findUnique({
+      where: { id },
+      select: { deviceId: true }
+    });
+    
+    if (!research) {
+      return res.status(404).json({ error: 'Not Found', message: 'Research not found' });
+    }
+    
+    if (research.deviceId && research.deviceId !== deviceId) {
+      return res.status(403).json({ error: 'Forbidden', message: 'You do not have permission to delete this workspace' });
+    }
     
     await prisma.research.delete({
       where: { id }
@@ -150,6 +175,7 @@ export const deleteResearchController = async (req, res) => {
 export const getResearchDetailsController = async (req, res) => {
   try {
     const { id } = req.params;
+    const deviceId = req.headers['x-device-id'];
     
     const research = await prisma.research.findUnique({
       where: { id },
@@ -166,6 +192,10 @@ export const getResearchDetailsController = async (req, res) => {
     
     if (!research) {
       return res.status(404).json({ error: 'Not Found', message: 'Research not found' });
+    }
+    
+    if (research.deviceId && research.deviceId !== deviceId) {
+      return res.status(403).json({ error: 'Forbidden', message: 'You do not have access to this workspace' });
     }
     
     return res.status(200).json(research);

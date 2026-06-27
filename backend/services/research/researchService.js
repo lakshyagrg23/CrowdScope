@@ -46,6 +46,7 @@ export const generateResearchReport = async ({ query, depth }, researchId) => {
       await prisma.researchDiscussion.createMany({
         data: dataset.discussions.map(d => ({
           researchId,
+          discussionId: d.id,
           title: d.title || "",
           subreddit: d.subreddit || "",
           score: d.score || 0,
@@ -86,7 +87,8 @@ export const generateResearchReport = async ({ query, depth }, researchId) => {
             negativeSignals: c.negativeSignals,
             customerRequests: c.customerRequests,
             competitors: c.competitors,
-            evidence: c.evidence
+            evidence: c.evidence,
+            representativeIds: c.representativeIds
           }
         }))
       });

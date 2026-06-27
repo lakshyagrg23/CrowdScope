@@ -104,8 +104,36 @@ def perform_clustering(embeddings, discussions):
         
     t0_cluster = time.time()
     
-    clusterer = HDBSCAN(min_cluster_size=2)
+    # Adaptive clustering based on dataset size
+    num_samples = len(embeddings)
+    if num_samples < 10:
+        min_cluster_size = 2
+        min_samples = 1
+    elif num_samples < 50:
+        min_cluster_size = 3
+        min_samples = 2
+    else:
+        min_cluster_size = 4
+        min_samples = 2
+        
+    clusterer = HDBSCAN(min_cluster_size=min_cluster_size, min_samples=min_samples, cluster_selection_method='eom')
     labels = clusterer.fit_predict(embeddings)
+    
+    unique_labels = set(labels)
+    valid_labels = [l for l in unique_labels if l != -1]
+    
+    # Adaptive Retry Fallback 1: Lower constraints
+    if len(valid_labels) == 0 and min_cluster_size > 2:
+        logging.warning(f"HDBSCAN found 0 clusters with size {min_cluster_size}. Retrying with size 2.")
+        clusterer = HDBSCAN(min_cluster_size=2, min_samples=1, cluster_selection_method='eom')
+        labels = clusterer.fit_predict(embeddings)
+        unique_labels = set(labels)
+        valid_labels = [l for l in unique_labels if l != -1]
+        
+    # Adaptive Retry Fallback 2: Force grouping if it's completely fragmented
+    if len(valid_labels) == 0:
+        logging.warning("Embeddings are too fragmented. Forcing a single global cluster to prevent pipeline failure.")
+        labels = np.zeros(len(embeddings), dtype=int)
     
     clusters_map = {}
     
@@ -135,7 +163,13 @@ def perform_clustering(embeddings, discussions):
     return clusters_array
 
 
-def select_representatives(embeddings, clusters, discussions, mmr_lambda, mmr_top_k):
+def get_top_k(cluster_size):
+    if cluster_size <= 5: return 2
+    elif cluster_size <= 15: return 3
+    elif cluster_size <= 30: return 5
+    else: return 7
+
+def select_representatives(embeddings, clusters, discussions, mmr_lambda, mmr_top_k_unused):
     """Selects representative discussions for each cluster using Maximal Marginal Relevance (MMR)."""
     t0 = time.time()
     
@@ -177,7 +211,8 @@ def select_representatives(embeddings, clusters, discussions, mmr_lambda, mmr_to
         selected.append(unselected.pop(first_idx))
         
         # Iterative MMR for remaining slots
-        while len(selected) < mmr_top_k and unselected:
+        dynamic_top_k = get_top_k(len(cluster_ids))
+        while len(selected) < dynamic_top_k and unselected:
             best_score = -float('inf')
             best_idx = -1
             

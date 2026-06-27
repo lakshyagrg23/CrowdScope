@@ -14,6 +14,7 @@ model Research {
   entity      String
   industry    String
   depth       String
+  deviceId    String?
   status          String   @default("PENDING")
   progress        Int      @default(0)
   processingTime  Float?

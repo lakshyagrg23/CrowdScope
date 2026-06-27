@@ -31,6 +31,17 @@ export function AppShell() {
     };
   }, []);
 
+  // Auto-poll history if any workspace is currently processing
+  useEffect(() => {
+    const hasProcessing = history.some(w => w.status !== "COMPLETED" && w.status !== "FAILED");
+    if (hasProcessing) {
+      const interval = setInterval(() => {
+        fetchHistory(false); // Don't show loading spinner on background polls
+      }, 2000);
+      return () => clearInterval(interval);
+    }
+  }, [history]);
+
   const fetchHistory = async () => {
     try {
       const res = await api.get("/research?pageSize=20");
@@ -60,10 +71,10 @@ export function AppShell() {
       {/* Sidebar */}
       <div className="w-72 flex-shrink-0 border-r border-border bg-card/30 flex flex-col group/sidebar">
         {/* Header / Brand */}
-        <div className="h-16 flex items-center px-6 border-b border-border/50">
+        <Link to="/" className="h-16 flex items-center px-6 border-b border-border/50 hover:bg-secondary/20 transition-colors">
           <Database className="w-5 h-5 mr-3 text-primary" />
           <span className="font-semibold text-lg tracking-tight">CrowdScope</span>
-        </div>
+        </Link>
 
         {/* Primary Action */}
         <div className="p-4">

@@ -1,12 +1,14 @@
 import { fetchRedditData } from "../reddit/postFetchingService.js";
 
+import crypto from 'crypto';
+
 /**
  * Builds a structured text dataset from Reddit discussion data.
  * 
  * @param {string} entity The primary entity (e.g. Notion) to query for posts.
  * @param {Array<string>} subreddits Array of subreddit names to search.
  * @param {Object} config The depth configuration (subredditLimit, postLimit, commentLimit).
- * @returns {Promise<string>} The formatted dataset text.
+ * @returns {Promise<Object>} The formatted dataset.
  */
 export const buildDiscussionDataset = async (entity, subreddits, config) => {
   const { postLimit, commentLimit } = config;
@@ -30,9 +32,8 @@ export const buildDiscussionDataset = async (entity, subreddits, config) => {
 
   const dataset = {
     entity,
-    // totalPosts: posts.length,
-    // totalComments,
     discussions: posts.map(post => ({
+      id: crypto.randomUUID(),
       subreddit: post.subreddit,
       title: post.title,
       body: post.body,

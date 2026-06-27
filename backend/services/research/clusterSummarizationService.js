@@ -35,12 +35,15 @@ export const summarizeClusters = async (embeddedDataset) => {
         const representativeDocs = cluster.representativeIds.map(id => {
             const d = discussionMap[id];
             
-            const limitedComments = d.comments ? d.comments.slice(0, 2) : [];
-            let docString = `Title: ${d.title}\nBody: ${d.body || ''}\nComments:\n${limitedComments.join('\n')}`;
+            // Intelligent Truncation Budgeting
+            const safeTitle = d.title ? (d.title.length > 200 ? d.title.substring(0, 200) + "..." : d.title) : "";
+            const safeBody = d.body ? (d.body.length > 1800 ? d.body.substring(0, 1800) + "...[TRUNCATED]" : d.body) : "";
             
-            if (docString.length > 2500) {
-                docString = docString.substring(0, 2500) + "...[TRUNCATED]";
-            }
+            const limitedComments = d.comments ? d.comments.slice(0, 3).map(c => {
+                return c.length > 700 ? c.substring(0, 700) + "...[TRUNCATED]" : c;
+            }) : [];
+            
+            const docString = `Title: ${safeTitle}\nBody: ${safeBody}\nComments:\n${limitedComments.join('\n')}`;
             
             return { text: docString };
         });
@@ -96,7 +99,8 @@ Return a raw JSON object (without markdown code blocks) with the following exact
                 negativeSignals: result.negativeSignals || [],
                 customerRequests: result.customerRequests || [],
                 competitors: result.competitors || [],
-                evidence: result.evidence || []
+                evidence: result.evidence || [],
+                representativeIds: cluster.representativeIds || []
             };
         } catch (error) {
             console.error(`ClusterSummarization: Failed to summarize cluster ${cluster.id}`, error);

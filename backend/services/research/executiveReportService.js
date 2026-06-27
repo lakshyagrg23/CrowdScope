@@ -36,28 +36,32 @@ Expected JSON Structure:
     { 
       "title": "Strength Name", 
       "explanation": "Detailed explanation of what this strength is about.", 
-      "examples": ["Example quote from evidence"] 
+      "examples": ["Example quote from evidence"],
+      "sourceClusters": [0, 1] 
     }
   ],
   "painPoints": [
     { 
       "title": "Pain Point Name", 
       "explanation": "Detailed explanation of what this pain point is about.", 
-      "examples": ["Example quote from evidence"] 
+      "examples": ["Example quote from evidence"],
+      "sourceClusters": [0, 1] 
     }
   ],
   "featureRequests": [
     { 
       "title": "Feature/Consumer Request Name", 
       "explanation": "Detailed explanation.", 
-      "examples": ["Example quote from evidence"] 
+      "examples": ["Example quote from evidence"],
+      "sourceClusters": [0, 1] 
     }
   ],
   "competitors": [
     { 
       "title": "Competitor Name", 
       "explanation": "Detailed explanation of competitor signals.", 
-      "examples": ["Example quote from evidence"] 
+      "examples": ["Example quote from evidence"],
+      "sourceClusters": [0, 1] 
     }
   ],
   "recommendations": [
@@ -67,7 +71,22 @@ Expected JSON Structure:
       "basedOn": [
         "Title of supporting strength/pain point/feature request"
       ],
-      "expectedImpact": "Expected business impact of implementing this recommendation."
+      "expectedImpact": "Expected business impact of implementing this recommendation.",
+      "sourceClusters": [0, 1]
+    }
+  ],
+  "risks": [
+    {
+      "title": "Risk Name",
+      "explanation": "Detailed explanation of a potential business risk or threat.",
+      "sourceClusters": [0, 1]
+    }
+  ],
+  "opportunities": [
+    {
+      "title": "Opportunity Name",
+      "explanation": "Detailed explanation of a potential strategic or market opportunity.",
+      "sourceClusters": [0, 1]
     }
   ]
 }
@@ -79,6 +98,7 @@ Guidelines:
 4. Base the "confidence" in the discussionLandscape on the mathematical confidence scores provided in the clusters (e.g., scores > 0.8 are High, 0.4-0.8 are Medium, < 0.4 are Low).
 5. Extract 1-3 distinct, concise quotes from the cluster evidence to back up each finding in strengths, painPoints, featureRequests, and competitors.
 6. Every value inside basedOn MUST exactly match the title of an existing finding from strengths, painPoints or featureRequests. Never invent placeholder values.
+7. For every item (except summary and discussionLandscape), you MUST provide a "sourceClusters" array containing the integer 'clusterId' values (e.g., [0], [1, 3]) of the clusters that informed the insight.
 
 Structured Cluster Summaries (Business Intelligence):
 ${JSON.stringify(clusterSummaries, null, 2)}`;
@@ -119,7 +139,9 @@ ${JSON.stringify(clusterSummaries, null, 2)}`;
       painPoints: [],
       featureRequests: [],
       competitors: [],
-      recommendations: []
+      recommendations: [],
+      risks: [],
+      opportunities: []
     };
   }
 };
