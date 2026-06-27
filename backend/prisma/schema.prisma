@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Research {
+  id          String   @id @default(uuid())
+  title       String
+  query       String
+  entity      String
+  industry    String
+  depth       String
+  status          String   @default("PENDING")
+  progress        Int      @default(0)
+  processingTime  Float?
+  clusterCount    Int?
+  discussionCount Int?
+  embeddingModel  String?  @default("BAAI/bge-small-en-v1.5")
+  createdAt       DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  report      ResearchReport?
+  clusters    ResearchCluster[]
+  discussions ResearchDiscussion[]
+}
+
+model ResearchReport {
+  id          String   @id @default(uuid())
+  researchId  String   @unique
+  summary     String
+  data        Json     
+  
+  research    Research @relation(fields: [researchId], references: [id], onDelete: Cascade)
+}
+
+model ResearchCluster {
+  id          String   @id @default(uuid())
+  researchId  String
+  clusterId   Int
+  topic       String
+  confidence  Float
+  overview    String
+  data        Json     
+
+  research    Research @relation(fields: [researchId], references: [id], onDelete: Cascade)
+}
+
+model ResearchDiscussion {
+  id           String   @id @default(uuid())
+  researchId   String
+  discussionId String   @default(uuid())
+  title        String
+  subreddit    String
+  score        Int
+  body         String
+  url          String
+  comments     Json     
+
+  research     Research @relation(fields: [researchId], references: [id], onDelete: Cascade)
+}

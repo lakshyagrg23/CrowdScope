@@ -1,10 +1,10 @@
 import { generateResearchReport } from '../services/research/researchService.js';
+import prisma from '../config/prismaClient.js';
 
-export const researchController = async (req, res) => {
+export const createResearchController = async (req, res) => {
   try {
     const { query, depth = 'standard' } = req.body;
 
-    // 1. Basic Input Validation
     if (!query || typeof query !== 'string' || query.trim() === '') {
       return res.status(400).json({
         error: 'Bad Request',
@@ -19,20 +19,130 @@ export const researchController = async (req, res) => {
       });
     }
 
-    // 2. Delegate to the Service Layer
-    const report = await generateResearchReport({ 
-      query: query.trim(), 
-      depth 
+    // Create the persistent workspace record
+    const research = await prisma.research.create({
+      data: {
+        title: query.trim(),
+        query: query.trim(),
+        entity: "Pending",
+        industry: "Pending",
+        depth: depth,
+        status: "PROCESSING"
+      }
     });
 
-    // 3. Return the payload
-    return res.status(200).json(report);
+    // Trigger the background pipeline without awaiting it
+    generateResearchReport({ query: query.trim(), depth }, research.id)
+      .catch(error => console.error("Pipeline failed for research ID:", research.id, error));
+
+    // Return the ID and status immediately (202 Accepted)
+    return res.status(202).json({
+      id: research.id,
+      status: research.status
+    });
 
   } catch (error) {
-    console.error(`Error inside researchController for query: ${req.body?.query}`, error);
+    console.error(`Error inside createResearchController for query: ${req.body?.query}`, error);
     return res.status(500).json({
       error: 'Internal Server Error',
-      message: 'An unexpected error occurred while executing the community research.'
+      message: 'An unexpected error occurred while initializing the community research.'
+    });
+  }
+};
+
+export const getResearchController = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const research = await prisma.research.findUnique({
+      where: { id },
+      include: {
+        report: true,
+        // Optional: Include clusters if needed by the frontend, but report might be enough
+        // clusters: true,
+        // discussions: true
+      }
+    });
+    
+    if (!research) {
+      return res.status(404).json({ error: 'Not Found', message: 'Research not found' });
+    }
+    
+    return res.status(200).json(research);
+    
+  } catch (error) {
+    console.error(`Error inside getResearchController for id: ${req.params.id}`, error);
+    return res.status(500).json({
+      error: 'Internal Server Error',
+      message: 'An unexpected error occurred while fetching the research.'
+    });
+  }
+};
+
+export const getAllResearchController = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || 20;
+    const skip = (page - 1) * pageSize;
+
+    const [workspaces, totalCount] = await Promise.all([
+      prisma.research.findMany({
+        skip,
+        take: pageSize,
+        orderBy: { createdAt: 'desc' },
+        select: {
+          id: true,
+          title: true,
+          query: true,
+          entity: true,
+          industry: true,
+          status: true,
+          progress: true,
+          createdAt: true,
+          processingTime: true,
+          clusterCount: true,
+          discussionCount: true,
+        }
+      }),
+      prisma.research.count()
+    ]);
+
+    return res.status(200).json({
+      data: workspaces,
+      meta: {
+        page,
+        pageSize,
+        totalCount,
+        totalPages: Math.ceil(totalCount / pageSize)
+      }
+    });
+  } catch (error) {
+    console.error(`Error inside getAllResearchController:`, error);
+    return res.status(500).json({
+      error: 'Internal Server Error',
+      message: 'An unexpected error occurred while fetching the workspaces.'
+    });
+  }
+};
+
+export const deleteResearchController = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    await prisma.research.delete({
+      where: { id }
+    });
+    
+    return res.status(200).json({ message: 'Research workspace deleted successfully' });
+  } catch (error) {
+    // Prisma throws a known error if the record to delete does not exist (P2025)
+    if (error.code === 'P2025') {
+      return res.status(404).json({ error: 'Not Found', message: 'Research not found' });
+    }
+    console.error(`Error inside deleteResearchController for id: ${req.params.id}`, error);
+    return res.status(500).json({
+      error: 'Internal Server Error',
+      message: 'An unexpected error occurred while deleting the workspace.'
     });
   }
 };
