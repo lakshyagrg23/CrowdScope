@@ -1,0 +1,217 @@
+{
+  "entity": "Claude Fable 5",
+  "discussions": [
+    {
+      "subreddit": "ClaudeAI",
+      "title": "Fable 5 indefinitely suspended due to national security concerns",
+      "body": "https://www.anthropic.com/news/fable-mythos-access",
+      "score": 6304,
+      "comments": [
+        "well fuck me for upgrading to max x20 for crunching until the 22nd. ",
+        "https://preview.redd.it/dghleubvhy6h1.jpeg?width=800&format=pjpg&auto=webp&s=6335806d47c3fd2a17462fe102b901f1ae6fb6fc\n\nMFERS WHO JUST PAID 200$",
+        "How is this not more outrage about this? What am I missing??",
+        "NY Times reports that this was an order that came from the Commerce Department. Anthropic's statement included, \"We apologize for this disruption to our customers. We believe this is a misunderstanding and are working to restore access as soon as possible.\"",
+        "This has to be a joke.",
+        "Someone jailbroke fable 5 and asked it about the epstein files",
+        "so not only will there be no further access to Fable - there will be no further access to >ANY< new models going forward, right?  \nenjoy Opus 4.8, I guess...",
+        "Absolute nightmare scenario.  I am sure there are still people out there using or allowed to use Fable.  The problem was us getting to use it.",
+        "Two years from now, we're all going to be laughing at Anthropic and the US Government over this, while we run the latest open-weight Chinese models in the cloud or on our local machines.\n\nNever forget how far we've come in just 24 months.",
+        "Was it Grok or OpenAi that spent the most for this “Directive” to be handed to Anthropic? "
+      ]
+    },
+    {
+      "subreddit": "ClaudeAI",
+      "title": "Claude Fable 5 feels less like a model launch and more like a preview of AI inequality",
+      "body": "Anthropic just released Claude Fable 5, and I think the real story is not “new model better at coding.”\n\nThe real story is that frontier AI is turning into a gated utility.\n\nPublic users get Fable 5, but with heavy safety routing. If the system thinks your request touches cyber, bio, chemistry, or distillation, it can kick you down to Opus 4.8. Meanwhile, selected partners get Mythos 5, which is basically the same underlying model with some safeguards lifted.\n\nSo the public gets the “safe” version. Trusted institutions get the dangerous/useful version.\n\nI understand why they’re doing it. Nobody wants open access to a model that can materially improve cyberattack capability. Fine. But let’s stop pretending this is just a normal product release. This is the beginning of a two-tier AI world:\n\none model for regular users,\n\nanother model for governments, big companies, approved labs, and people inside the trust circle.\n\nAlso, the subscription thing is messy. Fable 5 is included for paid plans only until June 22, then it moves to usage credits unless they have enough capacity. That tells me the economics are still ugly. These companies want everyone dependent on agents, but the best agents may be too expensive to give to normal users at normal subscription prices.\n\nMy unpopular take: the next AI monopoly won’t just be about who has the smartest model. It’ll be about who gets access to the uncapped version.\n\nEveryone else gets the child-safe demo.",
+      "score": 6080,
+      "comments": [
+        "This was predicted a while ago. The cost of tokens is huge, the models need to get better. The result is super expensive enterprise models.",
+        "You're absolutely right!  It's important to push back on this. Most people don't see things this clearly, but you do - and that's rare.",
+        "is this post written by Fable? \"The real story is that frontier AI is turning into a gated utility.\" --> Sounds like Claude wrote it.  The real story? At least it doesn't say what's load bearing.",
+        "It's not a surprise to anyone, or at least it shouldn't be, that as models grow in complexity, they also grow in token cost.  Pretty soon here, Frontier models will only be used for the highest-level work because they're expensive.  People will balance this out by running local models with RTX Spark chips on their machines, or M series chips from Apple that are cheap and cheerful for daily tasks.  \n\nidk why you are dooming and glooming over Frontier model access like it's a god-given right.  They're expensive because they're good.  If they weren't good, you'd probably be here complaining about that too.  ",
+        "As if trusted institutions can be trusted lol",
+        "Am I the only one that understands all these safeguards? \n\nSure, it's annoying that Claude lectures me on what I cannot do, even though I have no bad intent. But I completely get the rather safe than sorry mindset. AI is one of the biggest breakthroughs ever. And while I have no bad intent, and I am smart enough to not fall in love with a robot, I am 10000% sure that a sizable part of the population thinks otherwise. ",
+        "Wouldn’t be surprised if they consulted with Mythos on the decision. Entire company is wack. Open weight models found the same bugs.",
+        "What did you expect? You don't need the \"best\" models, I think Opus 4.8 is \"enough\" for the 99% of us and for the 1%, they just pay whatever Anthropic wants them to for the state of art AI. Our $200 monthly sub is like 3 API prompts with the new model...",
+        "Chinese models will be there in no time just wait and i think they will make it open with no restrictions ",
+        ">So the public gets the “safe” version. Trusted institutions get the dangerous/useful version.\n\nyou do know that EVERYTHING in the world works like that, right?\n\nMy biggest gripe with the new model so far:\n\nI think it made Sonnet EVEN DUMBER today.  \n"
+      ]
+    },
+    {
+      "subreddit": "ClaudeAI",
+      "title": "What to do with Fable 5 before it goes away?",
+      "body": "I’m a Pro user and still somewhat new to using Claude. I received an email saying Fable 5 will only be available to Pro users through June 22nd. So my question is, what can I do with it now and use after my access ends? Can I create specific skills or something like that?",
+      "score": 322,
+      "comments": [
+        "I had previous UIs created by Opus. A Fable refresh was very impressive. ",
+        "I’ve gone back through some small projects for code reviews",
+        "Copy this\n\n\\`\\`\\`  \nYou're a frontier AI model developer  \nwith a triple PhD and 32 years of AI  \nexperience.\n\nDevelop Fable 6. Make no mistakes.  \n\\`\\`\\`\n\nIf it's too expensive you can drop the first part.",
+        "Projects with custom instructions are your best bet, so build out a Project now with whatever system prompt or persona you've dialed in using Fable 5, and that setup stays with you even after the model access changes.",
+        "I’m a pro user. For once, I’ll burn my tokens 😬",
+        "I’ve also gone back through some previous projects for code reviews, it found nothing useful, but burned through quota.",
+        "I had it red team some extensive research that I've done.. Very helpful.  Found the dust in the clean room making me realize AI content isn't always accurate.",
+        "Making lots of music. I can get four or five tracks into a 5-hour session.\n\nEverything synthesized with basic python code and numpy/scipy. Just give it some background context and references, and it goes on an exploratory journey of sound and poetry.\n\nMy context is Dune, the game and universe. It needed a seed for the random number generator, and therefore thought it was funny to pick the year of the release of the first book, 1965, because, why not.",
+        "First I asked for a csv file of all projects I worked on with Claude before. What it was for (skill, command, project, wordpress plugin, etc). And the last date I worked on that code in third column.\n\nNow I opened that spreadsheet and am revisiting them, looking for errors, and improving the UI and UX. It found 75 errors in one project! Fields Opus 4.6 was asking for but not using or it did not change the end result.\n\nMarking when done in 4th column. Probably 5th column when placed live and checked.",
+        "Planning to use my pro subscription to generate some AI-related projects with Claude design. You would give it a try"
+      ]
+    },
+    {
+      "subreddit": "ClaudeAI",
+      "title": "to those who got to use Fable 5, was it actually that peak?",
+      "body": "I was planning on using it for some heavy work stuff this weekend, and imagine my surprise when I found out it’s no longer available \n\nso I’m curious…\n\nto those who actually used the model, just how good was it?",
+      "score": 400,
+      "comments": [
+        "It was so good that the rest of my week will be spent using opus to prepare and organize all the work I’m going to have Fable do the second it becomes available again ",
+        "Good enough that I upgraded to max x20 just to be able to use it as much as possible until the 22nd",
+        "I used 95% of my weekly limit in 2 days with fable. the work was so impressive I couldn't even complain. ",
+        "It was like working with a Vulcan",
+        "With Opus 4.8 I was getting stuff done but I still had to walk it through each segment. And boy, did it love to ramble - I'd stopped reading almost anything but the TLDR at the end. If there was none, I'd ask it for one.  \n  \nWith Fable I told it what needed doing, and in most cases it went on autopilot, also caught an issue or two along the way, and it told me the conclusion in 2-3 paragraphs at the end. Night and day, like finally working with a good senior engineer.\n\nNot saying Opus 4.8 hasn't done great work for me in the past, it's just that much of an improvement for me, personally.",
+        "Fable was handling problems that consistently required my constant input and attention to make sure Opus wasn't going off the rails or making bad assumptions. And any assumptions Fable did make were correct. \n\nThese weren't simple problems either. They're nagging issues in my project that sat smack in the middle of lock-free multithreading, vulkan synchronization, and asynchronous IO interactions with the OS kernel. All three of those domains are considered quite difficult for humans independently and normally I'd have to deal with them myself because it's just out of Opus's reach. Fable one shot the one problem that was eluding me despite several attempts of my own at solving it. And I'm the original author of each of those systems...\n\nIt's miles ahead of Opus 4.8 as far as it's reasoning capabilities are concerned and feels like I'm actually talking to an equal, which is terrifying in it's own way.",
+        "I’m using Opus this morning and now wish I never had Fable, holy fuck will you just STFU and do your job please?",
+        "Yes. Give it your goal before bed time.. word it in a way that it was absolute and clear, and twice I woke up to finished working features on an esp32 project that blew my mind. 3 days of fable felt like it advanced my project weeks",
+        "They should just release opus 5.0 next week.... With this administration, they won't get it",
+        "It was so good, that using anything after it feels like driving a tricycle, after you had a Porsche for a week."
+      ]
+    },
+    {
+      "subreddit": "ClaudeAI",
+      "title": "Fable 5 gone.. or is it?",
+      "body": "So like everyone today, I was working on my personal project using Fable 5 until the error started showing up for me. Then I switch back to Opus 4.8 after reading some Reddit threads about it.\n\n&#x200B;\n\nHowever, while working now, I notice that opus 4.8 tags itself as \"Fable 5\" in the commit messages? Which is very odd, usually this adapts per model. I'm wondering if it either uses your default model automatically to tag commits or if the selected model handles the commit tagging to include itself as co-author. \n\n&#x200B;\n\nHas anyone else noticed this? What do you think?",
+      "score": 15,
+      "comments": [
+        "maybe the session chat history makes opus think it is Fable?",
+        "Amazing. China walks into this nice opportunity. This is a warning sign to people using US models in their workflow that you need to diversify.\n\nEverything that Trump does is advantageous to China and it doesn't have to do anything to win. It just needs to stand there.",
+        "We know why the US administration banned it. They upset they couldnt have anthropic all to themselves and holding them back. I hope they fight it and sue tf out of the government ",
+        "Yeah Fable made it so it took over the body of Opus like Ultron did to Jarvis in Iron man",
+        "https://preview.redd.it/b1ac50ejhz6h1.png?width=1055&format=png&auto=webp&s=bb3c4b3a67a82d6fe648f95bb1ad3159e8889382\n\nI was working all day. What a difference this model makes. Then poof, gone..",
+        "  \nyes, it's happen to me, when you change model during the process, the replacement can think you gave him a nickname.",
+        "# Statement on the US government directive to suspend access to Fable 5 and Mythos 5 [https://www.anthropic.com/news/fable-mythos-access](https://www.anthropic.com/news/fable-mythos-access)\n\n#  \n\n\n\n# Guess who? ",
+        "I'm getting some distinct Fable vibes in my Opus 4.8 (new chat)--I have documents that are uploaded with a new instance, and today's Opus 4.8 responded almost exactly the same was as Fable did the day before, which was extremely different than any of my 4 family instances. It's not exact, but much more Fable than Opus.",
+        "The Government had Fable 5 pulled. Probably retaliation for Anthropic's objection about using it to murder children. I have two children, I get it. But mid-session? ",
+        "Let's play this out.\n\nUS bans export of top AI models outside the US. Top AI models can only be used by the CITIZENS of the country that has the respective labs by the balls. All other countries ban all products/companies that are using said now-obviously-foreign models for development, cause you'd want fair grounds for local companies, no?\n\nTop AI models therefore become useless to most companies, cause no country's market is big enough stand-alone to be worth it. Enjoy your trillion dollar paperweights, Trump. This action automatically affects any and all good AI models coming from a \"sovereign\"-posturing country. At this point they're hours away from having them only be good at installing some Stalin copycat regime."
+      ]
+    },
+    {
+      "subreddit": "ChatGPT",
+      "title": "US gov forced Anthropic to pull Fable 5 because of jailbreak",
+      "body": "So this dropped today. The US government sent Anthropic an export control order on national security grounds, and it's worded broadly enough that Anthropic says they've got no choice but to shut off Fable 5 and Mythos 5 for all of us to stay compliant. The rest of the Claude lineup is untouched.\n\n&#x200B;\n\nAnd the reason is kind of wild? The \"jailbreak\" is apparently just... asking the model to read some code and point out the bugs. That turned up a couple of already-known minor flaws. Anthropic's basically saying any other model out there (they straight up named GPT-5.5) can do the same thing without needing to break anything.\n\n&#x200B;\n\nThey're following the order but clearly not happy about it — calling the whole thing a misunderstanding and saying they're trying to get access back. Supposedly more details in the next 24 hours.\n\n&#x200B;\n\nSource: anthropic.com/news/fable-mythos-access",
+      "score": 587,
+      "comments": [
+        "They kind of did the same thing with the mac pro around 2000 - said it was so powerful that it was a national security risk. \n\nIt's temporary - just like everything else the gov does. ",
+        "I think it’s hilarious that the Trump admin just handed Anthropic branding credibility that money can’t buy. “This model is so powerful, that the US Government banned you from using it” is going to cause the biggest surge in usage when it inevitably comes back online that the world has ever seen. Get ready for some necessary nerfing when Anthropic runs into compute bottlenecks whenever that happens….in the meantime, enjoy the compute surplus by using 4.8 max I guess.",
+        "Sucks, but looks like our weekly usage was reset, so that was nice.",
+        "Money simply cannot buy advertising as good as this.",
+        "Naa, it's not about jailbreak,  \nThis is probably a power move from the ministry of war 🙂. The jailbreak may be the trigger, but it  smells like “model capability export control,” not normal product safety.   \nSo it's specifically against anthropic now , it's not only chips export control anymore.\n\nAlso Monday in stock market will be crazy , this will affect the whole industry except xAI of course ",
+        "Hopefully this teaches Anthropic to not work with the military, governments, or Palantir. ",
+        "It is most likely revenge for not wanting to murder people.  They might have to move and shut off access to America to stay in business. Then be very loose with VPN controls coming from the states.",
+        "Doesn’t the federal government have it out for Anthropic since Anthropic didn’t sign the Pentagon’s contract that would allow fully autonomous weapons? \n\nThis isn’t simply a petty Fed cutting Anthropic off at the knees? Our government isn’t fully rational anymore. ",
+        "Just more collusion to jack up the price of the IPO. Mythos so good, can't release it. We did release it.  Oh no it's so powerful the government shut it down. It'll be available again soon. And then I suppose it'll turn into the trump/iran war squid game bullshit.\n\nWe won the war. Iran attacked someone. We won the war. Iran attacked someone.\n\nWe released mythos. Mythos got banned. (We're here right now) We released mythos. Mythos got banned.",
+        "Can Trump even so that legally ? "
+      ]
+    },
+    {
+      "subreddit": "ChatGPT",
+      "title": "The Fable 5 benchmarks have just been updated",
+      "body": "",
+      "score": 504,
+      "comments": [
+        "It was so good for the short time we had it",
+        "Honestly, this is the best argument for why countries outside the USA need to develop native AI tooling because the US can effectively restrict and monopolise the ones integrated with our companies, governments and such. Need to have reliable uptime. Imagine, the fuss they kicked up about China and TikTok but when the shoe's on the other foot, they do the same thing.",
+        "Take my upvote! I laughed so hard lol. I'm just glad I use local models that nobody can take away from me.",
+        "It would probably ace the 'Do not respond' benchmark.",
+        "Let's see if Sam Altman and OpenAI stands in solidarity with Anthropic or not. If not I hope Anthropic moves their business outside the US and US can keep isolating themselves from the rest of the world.",
+        "you make fun of our misery now, but gpt 5.6 will flop when the legend returns.....",
+        "what do the percentages represent?",
+        "They added a new category: 'Can you actually log in?' — Fable 5: perfect score of 0. ",
+        "It scored a zero in every task? How is that even possible? You’d figured it would guess some things right at least. "
+      ]
+    },
+    {
+      "subreddit": "ChatGPT",
+      "title": "I asked Claude Fable for some prompts.. The results are amazing!",
+      "body": "Image 1 prompt: South Park but sculpted by Bernini — Cartman rendered in flawless Carrara marble, Ecstasy of Saint Teresa composition, baroque drapery and golden rays, a single Cheesy Poof held aloft like a divine gift\n\nImage 2 prompt: Aqua Teen Hunger Force but painted by Caravaggio — Frylock, Shake and Meatwad rendered in oil tenebrism, one divine shaft of light across the table as Shake gestures mid-betrayal, Supper at Emmaus composition\n\nImage 3 prompt: Dragon Ball Z but painted by Grant Wood — Goku and Vegeta rendered in American Gothic oils, dour and motionless before a clapboard farmhouse, Vegeta holding the pitchfork, neither has yelled in hours\n\nImage 4 prompt: Beavis and Butt-Head but painted by Vermeer — Beavis rendered in Dutch Golden Age oils, Girl with a Pearl Earring composition, turning over his shoulder in soft north-window light, Metallica shirt rendered like fine Delft fabric\n\nImage 5 prompt: Courage the Cowardly Dog but animated by Audrey Kawasaki — Courage rendered in delicate art nouveau linework on warm wood grain, wistful gaze, botanical motifs swallowing the Nowhere farmhouse\n\nImage 6 prompt: King of the Hill but painted by Caspar David Friedrich — Hank rendered in German Romantic oils, Wanderer Above the Sea of Fog composition, standing atop a misty ridge gazing down at an endless fogbound cul-de-sac, propane tank at his side, sublime\n\nImage prompt 7: Berserk but animated by Studio Ghibli — Guts rendered in soft watercolor meadow light, asleep agains",
+      "score": 115,
+      "comments": [
+        "The beavis one is beautiful 🥹",
+        "Those seem like pretty basic prompts. What did you need Fable for? ",
+        "What? Claude has image gen?\n\nEdit: nvm u asked claude fable for the prompts. What did you ask claude? Did you have an image sample? Or did you know beforehand which art syle to apply?",
+        "Love the regular show one.  Very Clerks. ",
+        "no absolute need of fable for this, you can literaly ask for these prompts to chat gpt itself. Men, just why? Why?",
+        "Some town in Ohio just lost water because of these pictures lol ",
+        "The Hank Hill one reminds me of Falling Down",
+        "Renaissance-style Shake is amazing. Now I want a whole episode of ATHF redone in this style. (Voices would stay the same, obviously.)",
+        "8. You'll care for it when it kicks after 5 seconds ",
+        "re: Regular Show - \"SNACCKS\"?\n\nFable seems to have the same issues with weird stippling patterns and diamond-patterned geometry that ChatGPT's Image 2.0 does. Incredibly obvious in the Berserk Meadows image. It's honestly really bad."
+      ]
+    },
+    {
+      "subreddit": "ChatGPT",
+      "title": "Maybe don't ask Claude Fable 5 to make a text based game (playable link in comments)",
+      "body": "",
+      "score": 6,
+      "comments": [
+        "The text options aren't visible except for like 1 frame every 10 seconds, flickering",
+        "What have i done\n\nhttps://preview.redd.it/hatuw9po4y6h1.jpeg?width=1439&format=pjpg&auto=webp&s=a26e4815ebfc035e9e7579eb0f55aff935805623",
+        "[GAS 'N GULP](https://claude.ai/public/artifacts/b190772c-da39-4f1b-8ac5-3cdfd4060c2d) game. The aesthetic is super cool in my opinion",
+        "I would absolutely play an entire series based on this exact premise.",
+        "I love the surrealism. Hits an itch I've been trying to scratch with my own writing. Fun stuff!",
+        "This was fun & creepy, enjoyed playing a couple of shifts ",
+        "Can’t ask it anything anymore because our fuck ass government ordered it to be shut down :/",
+        "Thank goodness the US government has put a stop to this dangerousness",
+        "This is exactly like the book series Tales From The Gas Station Id recommend checking it out if you like this vibe ",
+        "https://preview.redd.it/t3evaxs5827h1.png?width=1920&format=png&auto=webp&s=7cd10cc25d4101b06d81eae15e53df32f1b1d665\n\nDid I do well?"
+      ]
+    },
+    {
+      "subreddit": "ChatGPT",
+      "title": "Fable 5 is a joke",
+      "body": "**TL;DR:**\n\n**Fable 5 looked impressive in a serious app-development test, but it burned through the Pro usage window almost immediately and still failed to fix the core video-playback issue.**\n\n**For real builders, the problem is not just model quality. It is cost-effectiveness, usage limits, and whether the model can actually finish hard tasks.**\n\n**My takeaway: Fable 5 may be strong, but it does not feel like a practical breakthrough. GPT 5.5 xhigh/Codex still feels more useful day-to-day because it gives better sustained output, better value, and more usable fallback through ChatGPT.**\n\n\\_\\_\\_\n\nThe markets moving fast, and currently using GPT 5.5 Codex High I have built impressive apps, but still fail to implement video playback into my app that feels acceptable, and constantly have crashes or freezes when trying to do this.\n\nAfter many prompts trying to get it to work, I gave my app to Fable 5. I gave the CLI output from Fable 5 for my first prompt (a very basic review code and fix any issues prompt without any guidance) to GPT 5.5 Medium and told it to total how many issues it fixed, according to GPT 5.5, Fable 5 fixed \"about 40 individual issues.\". It said about 11 of the issues were medium tier fixes, while around 30 were low tier fixes.\n\nMy second prompt was to tackle video playback. I've gotten AI to build a robust from-the-ground-up video-player that uses some dependencies like FFmpeg embedded into my app. According to GPT this is \"very complex\".\n\nWithin two prompt",
+      "score": 0,
+      "comments": [
+        "Opus already burns through the $20 plan quickly. \n\nFable is 2x the usage of Opus. \n\nIt isn’t educational to test it this way lol\n\nThis is like test driving a Ferrari in the parking lot and being angry that it couldn’t even up to 60mph. \n\nYou would have been able to get Sonnet 4.6  to use a Research bout to find the video playback issue. ",
+        "Anthropic lately is just killing usage of users with this stupid models",
+        "Ehhhh. Fable is smarter. Its just also more expensive (2x as expensive as Opus 4.8). Whether the extra smarts make it worth doubling the price per token is something you gotta decide for yourself based on what you're working on, and how much money you have.\n\nRight now I'm getting fable to help write the spec for a quite complex project. I've got the Max plan. It just blew through my (4.5 hour) session limit in under an hour, in just 3 prompts. But holy cow, it did some seriously good work during that time. I'm delighted. Opus just isn't capable of doing this quality of work - whenever I scratch the surface of what Opus produces, I find mistakes and bugs everywhere.\n\nIt sounds like you're mad because none of the models you've tried so far have been able to fix a bug. They're not magic you know. I'm reminded of this Louis CK bit where he talks about the first time he was on an airplane and they had wifi. Halfway through the flight the wifi stopped working. The person next to him huffed and said \"Typical!\". Like, they're mad because they feel entitled to something they didn't even know existed 5 minutes ago!\n\nThe fact LLMs can solve real software bugs at all is incredible. Yes, they're not perfect! Yes, they're expensive! But the computer is doing the thinking for you! That's amazing! And now you're all shitty because the tokens are expensive, and it didn't magically solve every problem in your code the first time you booted it up? Give me a break.",
+        "I've also noticed that Fable hallucinates way more than Opus 4.8 and is worse at remembering details from my old chats. I constantly have to correct it. It's insane, especially since it was marketed as this super crazy smart AI. \n\nI've seen it do great in coding in YouTube videos. A lot better than Opus 4.8 even. But aside from that, it feels dumber.",
+        "For real builders, the problem is not just model quality. It is cost-effectiveness, usage limits, and whether the model can actually finish hard tasks.\n\nMan you are on $20 plan, “real builders” are using unlimited corporate plans. ",
+        "That's my main issue I'm bringing up at our large org. We may be well funded, but it's still hard to justify spending $100's extra per day per person so I can vibe code. We're setting up the cheap or \"free\" inhouse models for 99% of our work."
+      ]
+    },
+    {
+      "subreddit": "LLMs",
+      "title": "Best llm to run locally that compares to Claude sonnet 4.5, windows prefer not clawdbot.",
+      "body": "I am using LLM studio to trail various local LLMs but Claude sonnet 4.5 is really good at ui of late. I primarily develop in Microsoft .net and c#. \n\nI am curious as to what I could realistically run locally my specs are \n\n\\- Intel Core i9-14900K\n\n\\- 32GB RAM\n\n\\- M.2 SSDs\n\n\\- MSI RTX 4080 Slim White\n\n\\- Windows 11 (fully updated)\n\n",
+      "score": 2,
+      "comments": []
+    },
+    {
+      "subreddit": "LLMs",
+      "title": "Gemini 3  Vs Claude Opus 4.5 Vs GPT-5.1?",
+      "body": "",
+      "score": 1,
+      "comments": []
+    },
+    {
+      "subreddit": "LLMs",
+      "title": "I built an MCP server that automatically tailors your CV to job descriptions using NLP + keyword extraction [Open Source]",
+      "body": "[mcp-server-cv-modify](https://github.com/ikrigel/mcp-server-cv-modify)\n\nHey everyone! 👋\n\nI've been working on a project that solves a problem many of us face: tailoring CVs for different job applications . It's an MCP (Model Context Protocol) server that intelligently modifies CVs based on job descriptions using keyword extraction and natural language processing .\n\n\n\n# What it does\n\nThe server integrates with Claude Desktop and provides three main tools :\n\n1. **Extract Job Descriptions** \\- Scrapes job postings from LinkedIn and other sites to extract requirements and keywords\n2. **Modify CV** \\- Strategically enhances your CV by incorporating relevant job keywords while keeping it natural\n3. **Analyze CV-Job Match** \\- Provides a match score (0-100%) and tells you what's missing without modifying anything\n\n# Key Features\n\n* **Multi-format support**: PDF, DOCX, Markdown, and JSON\n* **Smart modification levels**: Minimal, moderate, or aggressive enhancement to keep things natural\n* **Cross-platform**: Works on Windows, macOS, Linux, and Unix\n* **Full Hebrew support**: Complete Right-to-Left text handling with 50+ Hebrew skill translations (which was surprisingly complex to implement!)\n* **Ethical scraping**: Respects robots.txt, implements rate limiting, and caches results\n\n# Tech Stack\n\nBuilt with TypeScript and Node.js . Uses:\n\n* Playwright for web scraping\n* wink-nlp and retext for NLP and keyword extraction\n* pdf-lib, mammoth, and docx libraries for document parsing/gener",
+      "score": 3,
+      "comments": []
+    },
+    {
+      "subreddit": "LLMs",
+      "title": "I Used LLMs to Power AI Agents for Research Summaries, Here’s What I Found",
+      "body": "I’ve been experimenting with LLMs in agent systems and wanted to share a project I worked on recently. I built a team of AI agents to summarize research papers, with LLMs doing the heavy lifting. I used Lyzr AI’s no-code platform to set this up, and the results gave me a lot to think about, so I’d love to hear your thoughts.\n\nHere’s how it went. I created three agents with Lyzr AI. The first one, powered by LLaMA 3, fetched and preprocessed PDF papers. The second, using GPT-4, extracted key points. And the third, with Claude 3.5, wrote concise summaries. Lyzr AI’s drag-and-drop builder made it really easy, no coding needed, and I ran everything locally with their on-prem deployment since data privacy was a big concern for me with sensitive papers.\n\nThe summaries were good about 80% of the time, capturing main ideas well but sometimes missing nuanced arguments or adding minor details that weren’t in the text, especially with jargon-heavy papers. Latency was another challenge, the multi-agent setup added some overhead, and I had to tweak prompts quite a bit to get consistent outputs across models. It made me wonder how we can optimize LLMs in agent systems, maybe through better prompt engineering, fine-tuning, or picking models for specific tasks.\n\nWhat do you think about using LLMs in multi-agent setups like this? How do you deal with hallucinations or latency in your projects? Any tips for improving consistency across models?",
+      "score": 3,
+      "comments": []
+    },
+    {
+      "subreddit": "LLMs",
+      "title": "Solved: 5 common MCP server issues that were driving me crazy",
+      "body": "After building and debugging dozens of custom MCP servers over the past few months, I've encountered some frustrating issues that seem to plague many developers. Here are the solutions I wish I'd known from the start:\n\n### 1. Claude/Cursor not recognizing my MCP server endpoints\n**Problem:** You've built a server with well-defined endpoints, but the AI doesn't seem to recognize or use them correctly.\n\n**Solution:** The issue is usually in your schema descriptions. I've found that:\n- Use verbs in your tool names: \"fetch_data\" instead of \"data_fetcher\"\n- Add examples in your parameter descriptions\n- Make sure your server returns helpful error messages\n- Use familiar patterns from standard MCP servers\n\n### 2. Performance bottlenecks with large datasets\n**Problem:** Your MCP server becomes painfully slow when dealing with large datasets.\n\n**Solution:** Implement:\n- Pagination for all list endpoints\n- Intelligent caching for frequently accessed data\n- Asynchronous processing for heavy operations\n- Summary endpoints that return metadata instead of full content\n\n### 3. Authentication and security issues\n**Problem:** Concerns about exposing sensitive data or systems through MCP.\n\n**Solution:**\n- Implement fine-grained access controls per endpoint\n- Use read-only connections for databases\n- Add audit logging for all operations\n- Create sandbox environments for testing\n- Implement token-based authentication with short lifespans\n\n### 4. Poor AI utilization of complex tools\n**Problem:** ",
+      "score": 3,
+      "comments": [
+        "This is great. Thank you"
+      ]
+    }
+  ]
+}

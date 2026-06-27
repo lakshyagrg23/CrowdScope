@@ -1,40 +1,35 @@
-import { spawn } from "child_process";
-import path from "path";
-import { fileURLToPath } from "url";
+import axios from 'axios';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const FASTAPI_URL = process.env.SEMANTIC_SERVICE_URL || 'http://127.0.0.1:8000';
 
-const SCRIPT_PATH = path.resolve(__dirname, "../../scripts/fetch_reddit.py");
-
-export const fetchRedditData = (subreddits, query, postLimit, commentLimit) => {
-    return new Promise((resolve, reject) => {
-        const args = [SCRIPT_PATH, JSON.stringify(subreddits), query];
-        if (postLimit !== undefined) args.push(String(postLimit));
-        if (commentLimit !== undefined) args.push(String(commentLimit));
-
-        const pythonProcess = spawn("python", args);
-        let redditData = "";
-        let errorData = "";
-
-        pythonProcess.stdout.on("data", (data) => {
-            redditData += data.toString();
+/**
+ * Fetches Reddit data by calling the persistent FastAPI ML service.
+ * 
+ * @param {Array<string>} subreddits The list of subreddits to search.
+ * @param {string} query The research query.
+ * @param {number} postLimit Max posts per subreddit.
+ * @param {number} commentLimit Max comments per post.
+ * @returns {Promise<Array>} The fetched posts.
+ */
+export const fetchRedditData = async (subreddits, query, postLimit, commentLimit) => {
+    try {
+        const response = await axios.post(`${FASTAPI_URL}/reddit/fetch`, {
+            subreddits,
+            query,
+            post_limit: postLimit || 8,
+            comment_limit: commentLimit || 3
+        }, {
+            timeout: 60000 // Reddit API can still be slow depending on load
         });
-
-        pythonProcess.stderr.on("data", (data) => {
-            errorData += data.toString();
-        });
-
-        pythonProcess.on("close", (code) => {
-            if (code !== 0) {
-                return reject(new Error(`Reddit scraper exited with code ${code}. Error: ${errorData}`));
-            }
-            try {
-                const parsedData = JSON.parse(redditData);
-                resolve(parsedData);
-            } catch (err) {
-                reject(new Error(`Failed to parse Reddit scraper output: ${err.message}`));
-            }
-        });
-    });
+        
+        return response.data;
+    } catch (error) {
+        console.error("Failed to fetch Reddit data via FastAPI:", error.message);
+        
+        if (error.response) {
+            console.error("FastAPI Error Response:", error.response.data);
+        }
+        
+        throw error;
+    }
 };

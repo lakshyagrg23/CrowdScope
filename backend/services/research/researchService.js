@@ -1,7 +1,9 @@
 import { DEPTH_CONFIG } from '../../config/depthConfig.js';
 import { prepareResearchContext } from '../reddit/subredditDiscoveryService.js';
 import { buildDiscussionDataset } from './discussionDatasetService.js';
-import { generateReport } from './reportGenerationService.js';
+import { runSemanticPipeline } from '../analysis/semanticPipelineService.js';
+import { summarizeClusters } from './clusterSummarizationService.js';
+import { generateReport } from './executiveReportService.js';
 
 /**
  * Orchestrates the creation of a community intelligence research report.
@@ -27,12 +29,22 @@ export const generateResearchReport = async ({ query, depth }) => {
   const dataset = await buildDiscussionDataset(context.entity, context.subreddits, config);
   console.timeEnd("Dataset Building");
 
-  // 3. Prompt Gemini to extract insights tailored to the user's specific query
-  console.time("Gemini Report");
-  const report = await generateReport(query, context, dataset);
-  console.timeEnd("Gemini Report");
+  // 3. Run the semantic pipeline (Python HDBSCAN clustering)
+  console.time("Semantic Pipeline");
+  const embeddedDataset = await runSemanticPipeline(dataset);
+  console.timeEnd("Semantic Pipeline");
 
-  // 4. Return report with top-level metadata
+  // 4. Summarize clusters (Generate structured business intelligence concurrently)
+  console.time("Cluster Summarization");
+  const clusterSummaries = await summarizeClusters(embeddedDataset);
+  console.timeEnd("Cluster Summarization");
+
+  // 5. Synthesize final Executive Report
+  console.time("Executive Report Synthesis");
+  const report = await generateReport(query, context, clusterSummaries);
+  console.timeEnd("Executive Report Synthesis");
+
+  // 6. Return report with top-level metadata
   return {
     query,
     depth,
@@ -41,4 +53,3 @@ export const generateResearchReport = async ({ query, depth }) => {
     ...report
   };
 };
-
