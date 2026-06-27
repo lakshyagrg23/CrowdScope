@@ -146,3 +146,35 @@ export const deleteResearchController = async (req, res) => {
     });
   }
 };
+
+export const getResearchDetailsController = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const research = await prisma.research.findUnique({
+      where: { id },
+      include: {
+        report: true,
+        clusters: {
+          orderBy: { confidence: 'desc' }
+        },
+        discussions: {
+          orderBy: { score: 'desc' }
+        }
+      }
+    });
+    
+    if (!research) {
+      return res.status(404).json({ error: 'Not Found', message: 'Research not found' });
+    }
+    
+    return res.status(200).json(research);
+    
+  } catch (error) {
+    console.error(`Error inside getResearchDetailsController for id: ${req.params.id}`, error);
+    return res.status(500).json({
+      error: 'Internal Server Error',
+      message: 'An unexpected error occurred while fetching the research details.'
+    });
+  }
+};
