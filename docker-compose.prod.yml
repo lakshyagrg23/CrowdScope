@@ -5,6 +5,7 @@ services:
     environment:
       POSTGRES_USER: crowdscope
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-secretpassword}
+      POSTGRES_DB: crowdscope_db
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U crowdscope -d crowdscope_db"]
       interval: 10s
