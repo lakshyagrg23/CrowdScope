@@ -33,6 +33,7 @@ services:
       - DATABASE_URL=postgresql://crowdscope:${POSTGRES_PASSWORD:-secretpassword}@postgres-db:5432/crowdscope_db?schema=public
       - SEMANTIC_SERVICE_URL=http://fastapi-ml:8000
       - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - CLIENT_URL=${CLIENT_URL}
     depends_on:
       postgres-db:
         condition: service_healthy
