@@ -1,0 +1,75 @@
+services:
+  # The PostgreSQL Database
+  postgres-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: crowdscope
+      POSTGRES_PASSWORD: secretpassword
+      POSTGRES_DB: crowdscope_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  # The Python ML Service
+  fastapi-ml:
+    build:
+      context: ./python
+    environment:
+      # These will be passed from your local .env file when you run docker-compose
+      - REDDIT_CLIENT_ID=${REDDIT_CLIENT_ID}
+      - REDDIT_CLIENT_SECRET=${REDDIT_CLIENT_SECRET}
+      - REDDIT_USER_AGENT=${REDDIT_USER_AGENT}
+    networks:
+      - app-network
+    # Notice we don't expose ports to the host! It's completely internal to the Docker network.
+    
+  # The Node.js Express API
+  express-backend:
+    build:
+      context: ./backend
+    environment:
+      - DATABASE_URL=postgresql://crowdscope:secretpassword@postgres-db:5432/crowdscope_db?schema=public
+      - SEMANTIC_SERVICE_URL=http://fastapi-ml:8000
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    depends_on:
+      - postgres-db
+      - fastapi-ml
+    networks:
+      - app-network
+    # Also purely internal, accessible only within app-network!
+
+  # The API Gateway (Nginx)
+  nginx-gateway:
+    build:
+      context: ./nginx
+    ports:
+      # Map host port 5000 to container port 80.
+      # Because the frontend makes requests to http://localhost:5000, 
+      # this ensures Nginx intercepts them and routes them to express-backend!
+      - "5000:80"
+    depends_on:
+      - express-backend
+    networks:
+      - app-network
+
+  # The React Frontend
+  react-frontend:
+    build:
+      context: ./frontend
+    ports:
+      # Map host port 5173 (standard Vite port) to container port 80
+      - "5173:80"
+    networks:
+      - app-network
+
+# We declare a named volume so our database data survives container restarts
+volumes:
+  pgdata:
+
+# We define a custom network so our services can resolve each other by name
+networks:
+  app-network:
+    driver: bridge

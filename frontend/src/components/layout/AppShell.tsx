@@ -42,8 +42,9 @@ export function AppShell() {
     }
   }, [history]);
 
-  const fetchHistory = async () => {
+  const fetchHistory = async (showLoading = true) => {
     try {
+      if (showLoading) setLoading(true);
       const res = await api.get("/research?pageSize=20");
       setHistory(res.data.data);
     } catch (error) {

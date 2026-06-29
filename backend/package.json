@@ -1,7 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "start": "node server.js",
+    "start": "npx prisma db push --accept-data-loss && node server.js",
     "dev": "concurrently \"npm run start:ml\" \"nodemon server.js\"",
     "start:ml": "conda run -n crowdscope uvicorn app:app --app-dir ../python --host 127.0.0.1 --port 8000"
   },

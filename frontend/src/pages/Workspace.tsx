@@ -61,7 +61,7 @@ export function Workspace() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: ReturnType<typeof setInterval>;
     const fetchDetails = async () => {
       try {
         const res = await api.get(`/research/${id}/details`);
@@ -127,7 +127,7 @@ export function Workspace() {
   }
 
   if (data.status !== "COMPLETED") {
-    return <LoadingChecklist progress={data.progress} status={data.status} />;
+    return <LoadingChecklist progress={data.progress} />;
   }
 
   const { report, clusters, discussions } = data;
@@ -529,7 +529,7 @@ const STAGES = [
   { min: 90, label: "Finalizing workspace..." },
 ];
 
-function LoadingChecklist({ progress, status }: { progress: number, status: string }) {
+function LoadingChecklist({ progress }: { progress: number }) {
   return (
     <div className="flex-1 flex items-center justify-center bg-background p-8">
       <div className="w-full max-w-md space-y-8">

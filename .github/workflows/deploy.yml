@@ -1,0 +1,79 @@
+name: Build & Deploy to GHCR
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: ghcr.io/${{ github.repository_owner }}
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push FastAPI ML
+        uses: docker/build-push-action@v5
+        with:
+          context: ./python
+          push: true
+          tags: ${{ env.IMAGE_PREFIX }}/crowdscope-fastapi-ml:latest
+
+      - name: Build and push Express Backend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          push: true
+          tags: ${{ env.IMAGE_PREFIX }}/crowdscope-express-backend:latest
+
+      - name: Build and push Nginx Gateway
+        uses: docker/build-push-action@v5
+        with:
+          context: ./nginx
+          push: true
+          tags: ${{ env.IMAGE_PREFIX }}/crowdscope-nginx-gateway:latest
+
+# --- CD STAGE (Commented out until manual EC2 testing is verified) ---
+#
+#  deploy:
+#    needs: build-and-push
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Deploy to EC2 via SSH
+#        uses: appleboy/ssh-action@v1.0.3
+#        with:
+#          host: ${{ secrets.EC2_HOST }}
+#          username: ${{ secrets.EC2_USER }}
+#          key: ${{ secrets.EC2_SSH_KEY }}
+#          script: |
+#            cd ~/crowdscope-v4
+#            git pull origin main
+#            
+#            # Dynamically create the .env file from GitHub Secrets
+#            echo "REDDIT_CLIENT_ID=${{ secrets.REDDIT_CLIENT_ID }}" > .env
+#            echo "REDDIT_CLIENT_SECRET=${{ secrets.REDDIT_CLIENT_SECRET }}" >> .env
+#            echo "REDDIT_USER_AGENT=${{ secrets.REDDIT_USER_AGENT }}" >> .env
+#            echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" >> .env
+#            echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env
+#            
+#            # Pull the latest tiny images from GHCR
+#            docker compose -f docker-compose.prod.yml pull
+#            
+#            # Restart containers without tearing down network
+#            docker compose -f docker-compose.prod.yml up -d
+

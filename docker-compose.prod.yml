@@ -1,0 +1,60 @@
+services:
+  postgres-db:
+    image: postgres:15-alpine
+    command: postgres -c shared_buffers=128MB -c work_mem=4MB
+    environment:
+      POSTGRES_USER: crowdscope
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-secretpassword}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U crowdscope -d crowdscope_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  fastapi-ml:
+    image: ghcr.io/lakshyagrg23/crowdscope-fastapi-ml:latest
+    environment:
+      - REDDIT_CLIENT_ID=${REDDIT_CLIENT_ID}
+      - REDDIT_CLIENT_SECRET=${REDDIT_CLIENT_SECRET}
+      - REDDIT_USER_AGENT=${REDDIT_USER_AGENT}
+    networks:
+      - app-network
+    restart: unless-stopped
+    
+  express-backend:
+    image: ghcr.io/lakshyagrg23/crowdscope-express-backend:latest
+    environment:
+      - DATABASE_URL=postgresql://crowdscope:${POSTGRES_PASSWORD:-secretpassword}@postgres-db:5432/crowdscope_db?schema=public
+      - SEMANTIC_SERVICE_URL=http://fastapi-ml:8000
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+      fastapi-ml:
+        condition: service_started
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  nginx-gateway:
+    image: ghcr.io/lakshyagrg23/crowdscope-nginx-gateway:latest
+    ports:
+      # In production, Nginx listens on the standard HTTP port (80)
+      - "80:80"
+    depends_on:
+      - express-backend
+    networks:
+      - app-network
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+
+networks:
+  app-network:
+    driver: bridge
