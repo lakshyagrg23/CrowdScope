@@ -51,7 +51,7 @@ export function Home() {
             What do you want to research?
           </h1>
           <p className="text-lg text-muted-foreground max-w-xl mx-auto">
-            Instantly aggregate, analyze, and synthesize discussions across Reddit to uncover hidden market signals.
+            Instantly aggregate, analyze, and synthesize discussions across social media platforms like Reddit to uncover hidden market signals.
           </p>
         </div>
 
@@ -65,7 +65,7 @@ export function Home() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             disabled={loading}
-            placeholder="e.g., Nintendo Switch 2 rumors, React Server Components..."
+            placeholder="e.g., Nintendo Switch 2, React Server Components..."
             className="block w-full pl-14 pr-16 py-5 bg-card/50 border border-border rounded-2xl text-lg shadow-sm focus:ring-2 focus:ring-primary focus:border-primary transition-all disabled:opacity-50 outline-none placeholder:text-muted-foreground"
           />
           <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
@@ -108,7 +108,7 @@ export function Home() {
         {/* Suggested Queries */}
         <div className="flex flex-wrap items-center justify-center gap-2 pt-4">
           <span className="text-sm text-muted-foreground mr-2">Try:</span>
-          {["AI wearable devices", "Elden Ring DLC", "Next.js 15 features"].map((suggestion) => (
+          {["iOS 18", "Apple Vision Pro", "Next.js 15"].map((suggestion) => (
             <button
               key={suggestion}
               type="button"

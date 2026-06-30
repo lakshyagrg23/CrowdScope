@@ -48,32 +48,34 @@ jobs:
           push: true
           tags: ${{ env.IMAGE_PREFIX }}/crowdscope-nginx-gateway:latest
 
-# --- CD STAGE (Commented out until manual EC2 testing is verified) ---
-#
-#  deploy:
-#    needs: build-and-push
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Deploy to EC2 via SSH
-#        uses: appleboy/ssh-action@v1.0.3
-#        with:
-#          host: ${{ secrets.EC2_HOST }}
-#          username: ${{ secrets.EC2_USER }}
-#          key: ${{ secrets.EC2_SSH_KEY }}
-#          script: |
-#            cd ~/crowdscope-v4
-#            git pull origin main
-#            
-#            # Dynamically create the .env file from GitHub Secrets
-#            echo "REDDIT_CLIENT_ID=${{ secrets.REDDIT_CLIENT_ID }}" > .env
-#            echo "REDDIT_CLIENT_SECRET=${{ secrets.REDDIT_CLIENT_SECRET }}" >> .env
-#            echo "REDDIT_USER_AGENT=${{ secrets.REDDIT_USER_AGENT }}" >> .env
-#            echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" >> .env
-#            echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env
-#            
-#            # Pull the latest tiny images from GHCR
-#            docker compose -f docker-compose.prod.yml pull
-#            
-#            # Restart containers without tearing down network
-#            docker compose -f docker-compose.prod.yml up -d
-
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            set -e
+            
+            cd ~/crowdscope-v4
+            git pull origin main
+            
+            # Dynamically create the .env file from GitHub Secrets
+            cat > .env <<EOF
+            REDDIT_CLIENT_ID=${{ secrets.REDDIT_CLIENT_ID }}
+            REDDIT_CLIENT_SECRET=${{ secrets.REDDIT_CLIENT_SECRET }}
+            REDDIT_USER_AGENT=${{ secrets.REDDIT_USER_AGENT }}
+            GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
+            POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+            CLIENT_URL=${{ secrets.CLIENT_URL }}
+            EOF
+            
+            # Pull the latest tiny images from GHCR
+            docker compose -f docker-compose.prod.yml pull
+            
+            # Restart containers without tearing down network
+            docker compose -f docker-compose.prod.yml up -d --remove-orphans
