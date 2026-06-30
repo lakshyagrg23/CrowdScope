@@ -61,7 +61,7 @@ jobs:
           script: |
             set -e
             
-            cd ~/crowdscope-v4
+            cd ~/CrowdScope
             git pull origin main
             
             # Dynamically create the .env file from GitHub Secrets
