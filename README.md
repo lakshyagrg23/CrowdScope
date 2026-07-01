@@ -1,114 +1,264 @@
-# CrowdScope: AI-powered Market Insights Platform
-Businesses often struggle to tap into real, unfiltered customer feedback and market trends at scale. Traditional market research methods are time-consuming, expensive, and may lack the diversity of opinion needed for accurate insights.
+# CrowdScope: AI-Powered Market Intelligence Platform
 
-However, platforms like Reddit host millions of authentic discussions where users freely express opinions, share experiences, and highlight product pain points across every imaginable niche. Despite this, the vast, unstructured nature of Reddit data makes it difficult to extract meaningful insights manually.
+![CrowdScope](./frontend/public/image.png)
 
-**CrowdScope aims to solve this by leveraging AI to analyze Reddit discussions and deliver actionable market intelligence—helping businesses make data-driven decisions, discover customer pain points, and stay ahead of trends.**
+**CrowdScope** is an AI-powered market intelligence platform that transforms unstructured Reddit discussions into structured executive reports. It combines semantic embeddings, density-based clustering, and Large Language Models (LLMs) to uncover customer pain points, feature requests, competitive insights, and emerging market trends.
 
-![Screenshot 2025-06-06 011207](https://github.com/user-attachments/assets/391fa8e6-8047-4c7c-b3d5-e2c6b8e6292e)
-
----
-
-## 📖 Table of Contents
-- [About](#about)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Installation](#installation)
-- [Usage](#usage)
-- [License](#license)
-
----
-
-## About
-CrowdScope is an AI-powered platform that unlocks actionable market intelligence from Reddit—the internet’s largest pool of public opinion. By analyzing real conversations across thousands of communities, it helps businesses discover what their customers truly care about, identify emerging trends, and stay ahead of the competition.
+Unlike traditional sentiment analysis tools, CrowdScope groups discussions based on **semantic similarity**, allowing it to discover meaningful topics without predefined labels.
 
 ---
 
 ## Features
-✅ Provides insights **focussed** on the specified industry  
-✅ AI-powered **market insights & competitor analysis**  
-✅ Fetches **relevant Reddit discussions** using **Reddit API**  
-✅ Analyzes **public sentiment** using **Google Gemini AI API**  
-✅ Displays structured **business insights**:
-   - **Overview of Public Sentiments**
-   - **Positives**
-   - **Shortcomings**
-   - **Suggestions Regarding Optimal Business Strategy**
 
-✅ **Modern UI** built with **React.js + Tailwind CSS**  
-✅ **Fast & scalable** with **Vercel + Render deployment**
+- Semantic topic discovery using Sentence Transformers and HDBSCAN
+- Executive market reports generated with Gemini AI
+- Explainable insights backed by representative Reddit discussions
+- Asynchronous research pipeline with live progress tracking
+- Persistent research workspaces stored in PostgreSQL
+- Fully containerized microservice architecture
+- Automated CI/CD deployment to AWS using GitHub Actions
 
 ---
 
-## Tech Stack
-### **Frontend:**
-- **React.js**
-- **Tailwind CSS**
+# Research Pipeline
 
-### **Backend:**
-- **Node.js** (Express.js)
-- **Axios** (API requests)
-- **Python** (Reddit data fetching)
-- **Google Gemini API** (AI processing)
-- **Reddit API (PRAW)** (Fetching posts/comments)
+```text
+User Query
+     │
+     ▼
+Entity & Subreddit Discovery
+     │
+     ▼
+Reddit Retrieval
+     │
+     ▼
+Sentence Embeddings
+     │
+     ▼
+HDBSCAN Semantic Clustering
+     │
+     ▼
+Representative Selection (MMR)
+     │
+     ▼
+Cluster Summarization (Gemini)
+     │
+     ▼
+Executive Report Generation
+```
 
-### **Deployment:**
-- 🌍 **Frontend → Vercel**
-- 🔄 **Backend → Render**
+Each research request executes asynchronously, with intermediate results persisted in PostgreSQL so users can revisit previous reports without recomputation.
 
 ---
 
-## Installation
-### 🔹 Prerequisites
-- Install **Node.js** (`>= 16.x`)
-- Install **Python** (`>= 3.x`)
-- **Reddit API Credentials**:
-  - Create a **Reddit App** at [Reddit API](https://www.reddit.com/prefs/apps)
-  - Get `Client ID`, `Client Secret`, and `User Agent`
-- **Google Gemini API Key**:
-  - Get it from [Google AI Studio](https://aistudio.google.com/)
+# System Architecture
 
-### 🔹 Clone the Repository
-```sh
-git clone https://github.com/yourusername/Market-Insights-Platform.git
-cd Market-Insights-Platform
-```
-
-### 🔹 Clone the Repository
-```sh
-cd backend
-npm install
-```
-Create a .env file in the backend/ folder and add:
-```sh
-PORT=5000
-GEMINI_API_KEY=your_google_gemini_api_key
-REDDIT_CLIENT_ID=your_reddit_client_id
-REDDIT_CLIENT_SECRET=your_reddit_client_secret
-REDDIT_USER_AGENT=your_reddit_user_agent
-```
-Run the backend:
-```sh
-node server.js
+```text
+                    React Frontend (Vercel)
+                            │
+                            ▼
+                  Express API (Node.js)
+                            │
+         ┌──────────────────┴──────────────────┐
+         ▼                                     ▼
+ PostgreSQL (Prisma)                FastAPI ML Service
+                                             │
+                    ┌────────────────────────┴────────────────────────┐
+                    ▼                                                 ▼
+             Reddit Retrieval                               Semantic Pipeline
+                 (PRAW)                              Sentence Transformers
+                                                             │
+                                                         HDBSCAN
+                                                             │
+                                                             ▼
+                                                       Gemini AI
 ```
 
-### 🔹 Setup Frontend
-```sh
-cd frontend
-npm install
-npm run dev
-```
 ---
 
-## Usage
+# Key Features
 
-- Open the Frontend → http://localhost:5173
-- Select an industry & enter a query
-- Click "Get Insights"
-- View structured business insights!
+## Semantic Clustering
 
+Instead of relying on keyword matching, CrowdScope generates dense semantic embeddings using **BAAI/bge-small-en-v1.5** and groups related discussions with **HDBSCAN**, automatically discovering meaningful conversation themes.
 
-## License
+---
 
-MIT License – Free to use, modify, and distribute.
+## Executive Intelligence
 
+Each semantic cluster is summarized using **Gemini AI** to extract:
+
+- Executive Summary
+- Discussion Landscape
+- Strengths
+- Pain Points
+- Feature Requests
+- Competitor Mentions
+- Risks
+- Opportunities
+- Strategic Recommendations
+
+---
+
+## Explainable AI
+
+Every generated insight is traceable back to representative Reddit discussions selected using **Maximal Marginal Relevance (MMR)**, providing transparency instead of black-box AI outputs.
+
+---
+
+## Persistent Research Workspaces
+
+Research sessions are stored in PostgreSQL, allowing users to:
+
+- revisit previous reports
+- monitor research progress
+- inspect semantic clusters
+- explore supporting discussions
+
+---
+
+# Tech Stack
+
+## Frontend
+
+- React
+- Vite
+- Tailwind CSS
+- Axios
+
+## Backend
+
+- Node.js
+- Express.js
+- FastAPI
+- Prisma ORM
+- PostgreSQL
+
+## AI & Machine Learning
+
+- Sentence Transformers
+- HDBSCAN
+- Gemini AI
+- Scikit-learn
+- PyTorch
+- PRAW (Reddit API)
+
+## DevOps & Infrastructure
+
+- Docker
+- Docker Compose
+- Nginx
+- AWS EC2
+- GitHub Actions
+- GitHub Container Registry (GHCR)
+- Vercel
+
+---
+
+# Local Development
+
+## Prerequisites
+
+- Docker Desktop
+- Reddit API credentials
+- Gemini API key
+
+Create a `.env` file:
+
+```env
+REDDIT_CLIENT_ID=
+REDDIT_CLIENT_SECRET=
+REDDIT_USER_AGENT=
+
+GEMINI_API_KEY=
+
+POSTGRES_PASSWORD=
+
+CLIENT_URL=http://localhost:5173
+```
+
+Build and start the entire stack:
+
+```bash
+docker compose up -d --build
+```
+
+Initialize the database:
+
+```bash
+docker compose exec express-backend npx prisma db push
+```
+
+Open:
+
+```
+Frontend:
+http://localhost:5173
+
+Backend:
+http://localhost:5000
+```
+
+---
+
+# Production Deployment
+
+CrowdScope uses a fully automated CI/CD pipeline.
+
+```text
+Git Push
+     │
+     ▼
+GitHub Actions
+     │
+     ▼
+Build Docker Images
+     │
+     ▼
+Push Images to GHCR
+     │
+     ▼
+SSH into AWS EC2
+     │
+     ▼
+docker compose pull
+     │
+     ▼
+docker compose up -d
+```
+
+Infrastructure includes:
+
+- Docker Compose
+- Nginx Reverse Proxy
+- HTTPS via Let's Encrypt
+- GitHub Container Registry
+- GitHub Actions
+- AWS EC2
+
+---
+
+# Screenshots
+
+### Home
+
+![Home](./frontend/public/image.png)
+
+![Processing](./frontend/public/image2.png)
+
+---
+
+# Roadmap
+
+- Competitive analysis across multiple products
+- Conversational follow-up research
+- Multi-source ingestion (Reddit, X, Hacker News)
+- Interactive semantic cluster visualization
+- Authentication and team workspaces
+- Advanced analytics dashboard
+
+---
+
+# License
+
+MIT License
